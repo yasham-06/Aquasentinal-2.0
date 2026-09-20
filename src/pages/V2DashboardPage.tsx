@@ -470,11 +470,17 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
                 <MapPin className="w-4 h-4" />
               </div>
               <div>
-                <div className="font-display font-extrabold text-lg text-[#F8FAFC]">Block B</div>
-                <div className="text-[11px] text-[#94A3B8]">Affected Zone</div>
+                <div className="font-display font-extrabold text-lg text-[#F8FAFC]">
+                  {isLeakActive ? 'Block B' : 'All Zones'}
+                </div>
+                <div className="text-[11px] text-[#94A3B8]">
+                  {isLeakActive ? 'Affected Zone' : 'All Zones Normal'}
+                </div>
               </div>
             </div>
-            <span className="text-xs text-[#94A3B8] font-mono font-medium">Floor 2</span>
+            <span className="text-xs text-[#94A3B8] font-mono font-medium">
+              {isLeakActive ? 'Floor 2' : 'Monitored'}
+            </span>
           </div>
 
           {/* VALVE RECOMMENDATION CARD */}

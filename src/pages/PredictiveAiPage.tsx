@@ -302,7 +302,7 @@ export const PredictiveAiPage: React.FC<PredictiveAiPageProps> = ({
 
             <div className="flex items-center justify-between bg-[#07111F] p-2.5 rounded border border-[#243B53]">
               <div>
-                <span className="text-[#F1F5F9] font-bold block">Affected Zone</span>
+                <span className="text-[#F1F5F9] font-bold block">{isLeakActive ? 'Affected Zone' : 'Monitored Zone'}</span>
                 <span className="text-[10px] text-[#94A3B8]">Sub-meter spatial mapping</span>
               </div>
               <span className="px-2.5 py-1 rounded text-[10px] font-bold bg-[#13263A] text-[#22D3EE] border border-[#22D3EE]/40">
