@@ -8,41 +8,47 @@ export default {
   theme: {
     extend: {
       colors: {
-        aqua: {
-          50: '#f0fdfa',
-          100: '#ccfbf1',
-          200: '#99f6e4',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#14b8a6',
-          600: '#0d9488',
-          700: '#0f766e',
-          800: '#115e59',
-          900: '#134e4a',
-          950: '#042f2e',
+        v2: {
+          bg: '#061421',
+          bgSecondary: '#081A2B',
+          surface: '#0B2134',
+          elevated: '#0F2940',
+          border: '#163B55',
+          cyan: '#22D3EE',
+          brightCyan: '#06B6D4',
+          blue: '#38BDF8',
+          white: '#F8FAFC',
+          secondaryText: '#94A3B8',
+          mutedText: '#64748B',
+          success: '#22C55E',
+          warning: '#F59E0B',
+          critical: '#EF4444',
         },
-        cyanAccent: {
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
+        brand: {
+          bg: '#061421',
+          card: '#0B2134',
+          elevated: '#0F2940',
+          border: '#163B55',
+          cyan: '#22D3EE',
+          'cyan-hover': '#06B6D4',
+          blue: '#38BDF8',
+          text: '#F8FAFC',
+          muted: '#94A3B8',
+          success: '#22C55E',
+          warning: '#F59E0B',
+          critical: '#EF4444',
         },
-        navy: {
-          950: '#080c14',
-          900: '#0f172a',
-          850: '#151f32',
-          800: '#1e293b',
-          750: '#273549',
-          700: '#334155',
-        }
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Sora', 'Space Grotesk', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace'],
       },
       animation: {
         'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'ripple': 'ripple 2s infinite',
-        'fade-in': 'fadeIn 0.3s ease-in-out',
-        'slide-up': 'slideUp 0.3s ease-out',
+        'fade-in': 'fadeIn 0.2s ease-in-out',
+        'slide-up': 'slideUp 0.2s ease-out',
+        'flow-line': 'flowLine 1.5s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -50,8 +56,12 @@ export default {
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '0%': { transform: 'translateY(8px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        flowLine: {
+          '0%': { strokeDashoffset: '24' },
+          '100%': { strokeDashoffset: '0' },
         },
       }
     },

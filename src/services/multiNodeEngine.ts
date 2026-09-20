@@ -16,6 +16,7 @@ export interface MultiNodeState {
   pressurePoints: MicroPressurePoint[];
   esgMetrics: EsgMetrics;
   mode: SimulationMode;
+  leakPrevented: boolean;
 }
 
 export type MultiNodeListener = (state: MultiNodeState) => void;
@@ -25,6 +26,7 @@ class MultiNodeEngine {
   private tickCount = 0;
   private listeners: Set<MultiNodeListener> = new Set();
   private timerId: number | null = null;
+  private leakPrevented = false;
 
   // 6 Campus Mesh Nodes
   private nodes: MeshNodeInfo[] = [
@@ -33,8 +35,8 @@ class MultiNodeEngine {
       name: 'Main Inflow Supply Meter (Campus Gate)',
       type: 'MAIN_INFLOW',
       buildingId: 'campus-main',
-      flowRate: 140,
-      expectedFlow: 140,
+      flowRate: 169,
+      expectedFlow: 169,
       pressureBar: 4.2,
       status: 'Normal',
       connectedValveId: 'v-main-01',
@@ -93,8 +95,8 @@ class MultiNodeEngine {
       name: 'Central Overhead Storage Reservoir',
       type: 'RESERVOIR',
       buildingId: 'central-tank',
-      flowRate: 140,
-      expectedFlow: 140,
+      flowRate: 169,
+      expectedFlow: 169,
       pressureBar: 1.8,
       status: 'Normal',
       connectedValveId: 'v-tank-01',
@@ -169,8 +171,8 @@ class MultiNodeEngine {
   // Micro-Pressure Fatigue History
   private pressurePoints: MicroPressurePoint[] = [];
 
-  // Cumulated Saved Water for ESG
-  private savedWaterLiters = 18360;
+  // Cumulated Saved Water for ESG (starts at 0 in baseline)
+  private savedWaterLiters = 0;
 
   constructor() {
     this.initPressureHistory();
@@ -213,17 +215,22 @@ class MultiNodeEngine {
   public setMode(mode: SimulationMode) {
     this.mode = mode;
     if (mode === 'NORMAL') {
-      // Re-open all valves if normal reset
+      // Re-open all valves if normal reset and reset saved water to baseline 0
       this.valves = this.valves.map(v => ({ ...v, status: 'OPEN' }));
-      this.nodes = this.nodes.map(n => ({ ...n, isIsolated: false, status: 'Normal' }));
+      this.nodes = this.nodes.map(n => ({ ...n, isIsolated: false, status: 'Normal', flowRate: n.expectedFlow }));
+      this.savedWaterLiters = 0;
+      this.leakPrevented = false;
     }
     this.notify();
   }
 
   public toggleValve(valveId: string) {
+    let wasLeakActive = this.mode === 'LEAK' || this.mode === 'OVERFLOW';
+
     this.valves = this.valves.map(v => {
       if (v.id === valveId) {
         const newStatus = v.status === 'OPEN' ? 'CLOSED' : 'OPEN';
+        
         // Isolate target node
         this.nodes = this.nodes.map(n => {
           if (n.connectedValveId === valveId) {
@@ -236,6 +243,13 @@ class MultiNodeEngine {
           }
           return n;
         });
+
+        // If target valve is closed during leak, mark leak as prevented & set saved water to 18,360 L
+        if (newStatus === 'CLOSED' && (wasLeakActive || valveId === 'v-blk-b-02')) {
+          this.savedWaterLiters = 18360; // 6h prevented water loss volume
+          this.leakPrevented = true;
+        }
+
         return {
           ...v,
           status: newStatus,
@@ -273,32 +287,37 @@ class MultiNodeEngine {
         } else if (this.mode === 'OVERFLOW') {
           return { ...node, flowRate: 88, status: 'Critical' };
         } else {
-          const noise = Math.floor(Math.sin(this.tickCount * 0.8) * 1.5);
-          return { ...node, flowRate: 43 + noise, status: 'Normal' };
+          return { ...node, flowRate: 43, status: 'Normal' };
         }
-      }
-
-      if (node.id === 'node-main-01') {
-        const b2Flow = this.nodes.find(n => n.id === 'node-blk-b-02')?.flowRate || 43;
-        const totalSubFlows = 48 + 43 + b2Flow + 35; // A + B1 + B2 + C
-        return { ...node, flowRate: totalSubFlows, status: b2Flow > 64.5 ? 'Critical' : 'Normal' };
       }
 
       return node;
     });
 
-    // Calculate Differential Flow Audit (Main Inflow vs sum of Sub-meters)
-    const mainInflow = this.nodes.find(n => n.id === 'node-main-01')?.flowRate || 140;
-    const subSum = (this.nodes.find(n => n.id === 'node-blk-a')?.flowRate || 48) +
-                   (this.nodes.find(n => n.id === 'node-blk-b-01')?.flowRate || 43) +
-                   (this.nodes.find(n => n.id === 'node-blk-b-02')?.flowRate || 43) +
-                   (this.nodes.find(n => n.id === 'node-blk-c')?.flowRate || 35);
-    
-    const diff = Math.max(0, mainInflow - subSum);
+    // Calculate sum of active sub-node outflows
+    const b2Node = this.nodes.find(n => n.id === 'node-blk-b-02');
+    const isB2Isolated = b2Node?.isIsolated || false;
+    const b2Flow = b2Node?.flowRate || 43;
+
+    const actualTotalFlow = (this.nodes.find(n => n.id === 'node-blk-a')?.flowRate || 48) +
+                            (this.nodes.find(n => n.id === 'node-blk-b-01')?.flowRate || 43) +
+                            b2Flow +
+                            (this.nodes.find(n => n.id === 'node-blk-c')?.flowRate || 35);
+
+    // Update main inflow node & reservoir node to equal total campus inflow
+    this.nodes = this.nodes.map(node => {
+      if (node.id === 'node-main-01' || node.id === 'node-tank-01') {
+        return { 
+          ...node, 
+          flowRate: actualTotalFlow, 
+          status: b2Flow > 64.5 && !isB2Isolated ? 'Critical' : 'Normal' 
+        };
+      }
+      return node;
+    });
 
     // Micro pressure fatigue tracking
-    const b2Node = this.nodes.find(n => n.id === 'node-blk-b-02');
-    const isLeak = b2Node ? b2Node.flowRate > 64.5 : false;
+    const isLeak = b2Node ? (b2Node.flowRate > 64.5 && !b2Node.isIsolated) : false;
     
     const measuredP = Number((2.8 - (isLeak ? 0.45 : 0.02 * Math.sin(this.tickCount * 0.5))).toFixed(2));
     const grad = Number((isLeak ? 0.14 : 0.01).toFixed(2));
@@ -315,26 +334,31 @@ class MultiNodeEngine {
 
     this.pressurePoints = [...this.pressurePoints.slice(1), newPPoint];
 
-    if (isLeak) {
-      this.savedWaterLiters += 0.85; // accumulate saved water volume from active 2.0 prevention
-    }
-
     this.notify();
   }
 
   public getState(): MultiNodeState {
-    const mainInflow = this.nodes.find(n => n.id === 'node-main-01')?.flowRate || 140;
-    const subSum = (this.nodes.find(n => n.id === 'node-blk-a')?.flowRate || 48) +
-                   (this.nodes.find(n => n.id === 'node-blk-b-01')?.flowRate || 43) +
-                   (this.nodes.find(n => n.id === 'node-blk-b-02')?.flowRate || 43) +
-                   (this.nodes.find(n => n.id === 'node-blk-c')?.flowRate || 35);
-    
-    const diff = Math.max(0, mainInflow - subSum);
+    const b2Node = this.nodes.find(n => n.id === 'node-blk-b-02');
+    const isB2Isolated = b2Node?.isIsolated || false;
+
+    // Actual Main Inflow (at campus gate)
+    const mainInflow = this.nodes.find(n => n.id === 'node-main-01')?.flowRate || 169;
+
+    // Normal Accounted Sub-node Consumption (expected meters)
+    // If B2 is isolated: 48 + 43 + 0 + 35 = 126
+    // If B2 is normal or leaking: 48 + 43 + 43 + 35 = 169
+    const accountedFlow = isB2Isolated 
+      ? (48 + 43 + 0 + 35) 
+      : (48 + 43 + 43 + 35);
+
+    // UNACCOUNTED WATER = max(0, MAIN INFLOW - ACCOUNTED FLOW)
+    // In NORMAL mode: 169 - 169 = 0 L/min (Option A exact match!)
+    // In LEAK mode: 220 - 169 = 51 L/min (clearly significant differential leak!)
+    // In ISOLATED mode: 126 - 126 = 0 L/min (converged!)
+    const diff = Math.max(0, mainInflow - accountedFlow);
     const hasDiffLeak = diff > 5;
 
     // ESG Conversions:
-    // 1,000 L saved = 0.85 kWh saved
-    // 1 kWh saved = 0.71 kg CO2e avoided
     const totalWaterSaved = Math.round(this.savedWaterLiters);
     const energyKwh = Number(((totalWaterSaved / 1000) * 0.85).toFixed(2));
     const co2Kg = Number((energyKwh * 0.71).toFixed(2));
@@ -356,7 +380,8 @@ class MultiNodeEngine {
       hasDifferentialLeak: hasDiffLeak,
       pressurePoints: this.pressurePoints,
       esgMetrics,
-      mode: this.mode
+      mode: this.mode,
+      leakPrevented: this.leakPrevented
     };
   }
 

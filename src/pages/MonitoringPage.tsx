@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BuildingInfo, TelemetryPoint } from '../types';
-import { Building2, Gauge, Thermometer, Droplet, Activity, CheckCircle2, AlertTriangle, Radio } from 'lucide-react';
+import { Building2, Gauge, Thermometer, Droplet, Activity, Radio } from 'lucide-react';
 
 interface MonitoringPageProps {
   buildings: BuildingInfo[];
@@ -13,180 +13,169 @@ export const MonitoringPage: React.FC<MonitoringPageProps> = ({ buildings, lates
   const selectedBuilding = buildings.find(b => b.id === selectedBuildingId) || buildings[0];
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-6 pb-12 animate-fade-in">
       
-      {/* HEADER */}
-      <div className="border-b border-slate-800 pb-4">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center space-x-2">
-          <Activity className="w-7 h-7 text-cyan-400" />
-          <span>Campus Sensor Network Monitoring</span>
-        </h1>
-        <p className="text-sm text-slate-400 mt-1">
-          Detailed node-level telemetry and interactive facility map visualizer.
+      {/* Header */}
+      <div className="bg-[#0D1B2A] p-5 rounded-lg border border-[#243B53]">
+        <div className="flex items-center space-x-2 text-[#22D3EE] font-mono text-xs font-semibold uppercase tracking-wider mb-1">
+          <Activity className="w-4 h-4 text-[#22D3EE]" />
+          <span>Telemetry Stream Visualizer</span>
+        </div>
+        <h1 className="text-xl font-bold text-[#F1F5F9]">Sensor Network Monitoring</h1>
+        <p className="text-[#94A3B8] text-xs mt-0.5">
+          Detailed node-level sensor telemetry feeds and interactive campus spatial map.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         
-        {/* LEFT COLUMN: BUILDING MAP & NODE LIST */}
-        <div className="bg-slate-900/80 rounded-xl p-5 border border-slate-800">
-          <h2 className="text-base font-bold text-white mb-3 flex items-center space-x-2">
-            <Building2 className="w-5 h-5 text-cyan-400" />
-            <span>Select Facility Node</span>
+        {/* Left Column: Node Selector & Spatial Map */}
+        <div className="bg-[#0D1B2A] rounded-lg p-4 border border-[#243B53] space-y-3">
+          <h2 className="text-sm font-bold text-[#F1F5F9] flex items-center space-x-2 border-b border-[#243B53] pb-2">
+            <Building2 className="w-4 h-4 text-[#22D3EE]" />
+            <span>Select Sensor Node</span>
           </h2>
 
-          <div className="space-y-3">
+          <div className="space-y-2 font-mono text-xs">
             {buildings.map((b) => {
               const isSelected = b.id === selectedBuildingId;
               return (
                 <button
                   key={b.id}
                   onClick={() => setSelectedBuildingId(b.id)}
-                  className={`w-full text-left p-4 rounded-xl border transition-all flex items-center justify-between ${
+                  className={`w-full text-left p-3 rounded border transition-all flex items-center justify-between ${
                     isSelected 
-                      ? 'bg-slate-800 border-cyan-500 shadow-md shadow-cyan-500/10' 
-                      : 'bg-slate-950 border-slate-800 hover:border-slate-700'
+                      ? 'bg-[#13263A] border-[#22D3EE]/40 text-[#22D3EE] font-bold' 
+                      : 'bg-[#07111F] border-[#243B53] text-[#94A3B8] hover:text-[#F1F5F9]'
                   }`}
                 >
                   <div>
                     <div className="flex items-center space-x-2">
-                      <span className="font-bold text-white text-base">{b.name}</span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        b.status === 'Critical' ? 'bg-rose-950 text-rose-300 border border-rose-800' :
-                        b.status === 'Elevated' ? 'bg-amber-950 text-amber-300 border border-amber-800' :
-                        'bg-emerald-950 text-emerald-300'
+                      <span className="text-[#F1F5F9] font-bold">{b.name}</span>
+                      <span className={`text-[10px] px-1.5 py-0.2 rounded ${
+                        b.status === 'Critical' ? 'bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/40' :
+                        b.status === 'Elevated' ? 'bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/40' :
+                        'bg-[#22C55E]/20 text-[#22C55E] border border-[#22C55E]/40'
                       }`}>
                         {b.status}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 mt-1">{b.locationDescription}</p>
+                    <p className="text-[10px] text-[#94A3B8] mt-0.5">{b.locationDescription}</p>
                   </div>
 
                   <div className="text-right">
-                    <span className="text-sm font-extrabold text-cyan-400 block font-mono">
+                    <span className="text-xs font-bold text-[#22D3EE] block">
                       {b.id === 'block-b' ? latestTelemetry.actualFlow : b.flowRate} L/min
                     </span>
-                    <span className="text-[11px] text-slate-500">Tank: {b.tankLevel}%</span>
+                    <span className="text-[10px] text-[#94A3B8]">Tank: {b.tankLevel}%</span>
                   </div>
                 </button>
               );
             })}
           </div>
 
-          {/* Map Visual Box */}
-          <div className="mt-6 p-4 rounded-xl bg-slate-950 border border-slate-800 text-center">
-            <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-center space-x-1">
-              <Radio className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-              <span>Campus Map View</span>
+          {/* Map Grid */}
+          <div className="mt-4 p-3 rounded bg-[#07111F] border border-[#243B53] text-center font-mono">
+            <div className="text-[10px] text-[#22D3EE] uppercase tracking-wider mb-2 flex items-center justify-center space-x-1 font-bold">
+              <Radio className="w-3.5 h-3.5 animate-pulse" />
+              <span>Campus Node Matrix</span>
             </div>
             
-            {/* Visual Floor Grid Diagram */}
-            <div className="relative h-40 bg-navy-950 rounded-lg border border-slate-800 overflow-hidden flex items-center justify-center">
-              <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]"></div>
-              
-              <div className="grid grid-cols-2 gap-3 p-4 z-10 w-full">
-                {buildings.map((b) => (
-                  <div 
-                    key={b.id}
-                    onClick={() => setSelectedBuildingId(b.id)}
-                    className={`p-2 rounded border cursor-pointer text-center text-xs font-bold transition-all ${
-                      b.id === selectedBuildingId ? 'ring-2 ring-cyan-400' : ''
-                    } ${
-                      b.status === 'Critical' ? 'bg-rose-950/80 border-rose-500 text-rose-300' :
-                      b.status === 'Elevated' ? 'bg-amber-950/80 border-amber-500 text-amber-300' :
-                      'bg-slate-900 border-slate-700 text-slate-300'
-                    }`}
-                  >
-                    <div>{b.name}</div>
-                    <div className="text-[10px] font-normal font-mono opacity-80">
-                      {b.id === 'block-b' ? latestTelemetry.actualFlow : b.flowRate} L/m
-                    </div>
+            <div className="grid grid-cols-2 gap-2 p-2">
+              {buildings.map((b) => (
+                <div 
+                  key={b.id}
+                  onClick={() => setSelectedBuildingId(b.id)}
+                  className={`p-2 rounded border cursor-pointer text-center text-xs font-bold transition-all ${
+                    b.id === selectedBuildingId ? 'border-[#22D3EE] bg-[#13263A]' : 'bg-[#0D1B2A] border-[#243B53]'
+                  } ${
+                    b.status === 'Critical' ? 'text-[#EF4444]' : 'text-[#F1F5F9]'
+                  }`}
+                >
+                  <div>{b.name}</div>
+                  <div className="text-[10px] text-[#94A3B8]">
+                    {b.id === 'block-b' ? latestTelemetry.actualFlow : b.flowRate} L/m
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-            <p className="text-[11px] text-slate-500 mt-2">Interactive floor block telemetry mapping</p>
           </div>
 
         </div>
 
-        {/* RIGHT COLUMN: DETAILED TELEMETRY INSTRUMENTS (2 COLS) */}
-        <div className="lg:col-span-2 space-y-6">
+        {/* Right Column: Gauges */}
+        <div className="lg:col-span-2 space-y-4">
           
-          <div className="bg-slate-900/80 rounded-xl p-6 border border-slate-800">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+          <div className="bg-[#0D1B2A] rounded-lg p-5 border border-[#243B53] space-y-4">
+            <div className="flex items-center justify-between border-b border-[#243B53] pb-3">
               <div>
-                <h2 className="text-xl font-bold text-white">
-                  {selectedBuilding.name} — Node Telemetry Detail
+                <h2 className="text-base font-bold text-[#F1F5F9]">
+                  {selectedBuilding.name} — Sensor Readings
                 </h2>
-                <p className="text-xs text-slate-400">{selectedBuilding.locationDescription}</p>
+                <p className="text-xs text-[#94A3B8]">{selectedBuilding.locationDescription}</p>
               </div>
-              <span className="text-xs font-mono font-bold px-3 py-1 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">
-                ACTIVE SENSOR NODE #SN-{selectedBuilding.id.toUpperCase()}
+              <span className="text-xs font-mono font-bold px-2.5 py-1 rounded bg-[#13263A] text-[#22D3EE] border border-[#243B53]">
+                NODE #SN-{selectedBuilding.id.toUpperCase()}
               </span>
             </div>
 
-            {/* Gauges Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Gauges */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono">
               
-              {/* Gauge 1 */}
-              <div className="bg-slate-950 p-5 rounded-xl border border-slate-800 relative">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-semibold text-slate-400 uppercase">Flow Rate</span>
-                  <Activity className="w-4 h-4 text-cyan-400" />
+              <div className="bg-[#07111F] p-4 rounded border border-[#243B53]">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] text-[#94A3B8] uppercase">Flow Rate</span>
+                  <Activity className="w-3.5 h-3.5 text-[#22D3EE]" />
                 </div>
-                <div className="text-3xl font-extrabold text-white tracking-tight font-mono">
+                <div className="text-2xl font-bold text-[#22D3EE]">
                   {selectedBuilding.id === 'block-b' ? latestTelemetry.actualFlow : selectedBuilding.flowRate}
-                  <span className="text-sm font-normal text-slate-400 ml-1">L/min</span>
+                  <span className="text-xs text-[#94A3B8] font-normal ml-1">L/min</span>
                 </div>
-                <div className="text-xs text-slate-400 mt-2">
-                  Expected Baseline: <span className="text-slate-200 font-mono">{selectedBuilding.expectedFlow} L/min</span>
+                <div className="text-[10px] text-[#94A3B8] mt-1">
+                  Expected Baseline: {selectedBuilding.expectedFlow} L/min
                 </div>
               </div>
 
-              {/* Gauge 2 */}
-              <div className="bg-slate-950 p-5 rounded-xl border border-slate-800 relative">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-semibold text-slate-400 uppercase">Pressure</span>
-                  <Gauge className="w-4 h-4 text-purple-400" />
+              <div className="bg-[#07111F] p-4 rounded border border-[#243B53]">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] text-[#94A3B8] uppercase">Line Pressure</span>
+                  <Gauge className="w-3.5 h-3.5 text-[#0EA5E9]" />
                 </div>
-                <div className="text-3xl font-extrabold text-white tracking-tight font-mono">
+                <div className="text-2xl font-bold text-[#F1F5F9]">
                   {selectedBuilding.id === 'block-b' ? latestTelemetry.pressure : selectedBuilding.pressure}
-                  <span className="text-sm font-normal text-slate-400 ml-1">bar</span>
+                  <span className="text-xs text-[#94A3B8] font-normal ml-1">bar</span>
                 </div>
-                <div className="text-xs text-slate-400 mt-2">
-                  Optimal Operating Window: 2.5 - 3.2 bar
+                <div className="text-[10px] text-[#94A3B8] mt-1">
+                  Window: 2.5 - 3.2 bar
                 </div>
               </div>
 
-              {/* Gauge 3 */}
-              <div className="bg-slate-950 p-5 rounded-xl border border-slate-800 relative">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-semibold text-slate-400 uppercase">Overhead Tank Level</span>
-                  <Droplet className="w-4 h-4 text-blue-400" />
+              <div className="bg-[#07111F] p-4 rounded border border-[#243B53]">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] text-[#94A3B8] uppercase">Tank Level</span>
+                  <Droplet className="w-3.5 h-3.5 text-[#0EA5E9]" />
                 </div>
-                <div className="text-3xl font-extrabold text-white tracking-tight font-mono">
+                <div className="text-2xl font-bold text-[#F1F5F9]">
                   {selectedBuilding.id === 'block-b' ? latestTelemetry.tankLevel : selectedBuilding.tankLevel}%
                 </div>
-                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden mt-3">
+                <div className="w-full bg-[#13263A] h-1.5 rounded overflow-hidden mt-2">
                   <div 
-                    className="bg-cyan-500 h-full transition-all duration-300"
+                    className="bg-[#22D3EE] h-full transition-all"
                     style={{ width: `${selectedBuilding.id === 'block-b' ? latestTelemetry.tankLevel : selectedBuilding.tankLevel}%` }}
                   ></div>
                 </div>
               </div>
 
-              {/* Gauge 4 */}
-              <div className="bg-slate-950 p-5 rounded-xl border border-slate-800 relative">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-semibold text-slate-400 uppercase">Line Temperature</span>
-                  <Thermometer className="w-4 h-4 text-amber-400" />
+              <div className="bg-[#07111F] p-4 rounded border border-[#243B53]">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[10px] text-[#94A3B8] uppercase">Temperature</span>
+                  <Thermometer className="w-3.5 h-3.5 text-[#F59E0B]" />
                 </div>
-                <div className="text-3xl font-extrabold text-white tracking-tight font-mono">
+                <div className="text-2xl font-bold text-[#F1F5F9]">
                   {latestTelemetry.temperature}°C
                 </div>
-                <div className="text-xs text-slate-400 mt-2">
-                  Ambient thermal drift monitored
+                <div className="text-[10px] text-[#94A3B8] mt-1">
+                  Thermal Sensor Active
                 </div>
               </div>
 
@@ -195,20 +184,16 @@ export const MonitoringPage: React.FC<MonitoringPageProps> = ({ buildings, lates
           </div>
 
           {/* Node Health Log */}
-          <div className="bg-slate-900/80 rounded-xl p-5 border border-slate-800">
-            <h3 className="text-sm font-bold text-white mb-3">Sensor Diagnostic Log</h3>
-            <div className="space-y-2 text-xs font-mono text-slate-300">
-              <div className="p-2 rounded bg-slate-950 border border-slate-800 flex justify-between">
+          <div className="bg-[#0D1B2A] rounded-lg p-4 border border-[#243B53]">
+            <h3 className="text-xs font-mono font-bold text-[#F1F5F9] mb-2 uppercase text-[#94A3B8]">Sensor Diagnostic Log</h3>
+            <div className="space-y-1.5 text-xs font-mono text-[#F1F5F9]">
+              <div className="p-2 rounded bg-[#07111F] border border-[#243B53] flex justify-between">
                 <span>[15:55:00] Telemetry Packet Received</span>
-                <span className="text-emerald-400">CRC VALID</span>
+                <span className="text-[#22C55E]">CRC VALID</span>
               </div>
-              <div className="p-2 rounded bg-slate-950 border border-slate-800 flex justify-between">
+              <div className="p-2 rounded bg-[#07111F] border border-[#243B53] flex justify-between">
                 <span>[15:54:30] Flow Meter Calibration Ping</span>
-                <span className="text-cyan-400">STATUS 200 OK</span>
-              </div>
-              <div className="p-2 rounded bg-slate-950 border border-slate-800 flex justify-between">
-                <span>[15:54:00] Modbus RS-485 Gateway Connection</span>
-                <span className="text-slate-400">LATENCY 12ms</span>
+                <span className="text-[#22D3EE]">STATUS 200 OK</span>
               </div>
             </div>
           </div>

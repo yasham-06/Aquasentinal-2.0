@@ -14,6 +14,7 @@ import {
   INITIAL_ALERTS, 
   INITIAL_TICKETS 
 } from './mockData';
+import { multiNodeEngine } from './multiNodeEngine';
 
 export type TelemetryListener = (data: {
   telemetryHistory: TelemetryPoint[];
@@ -152,7 +153,14 @@ class TelemetryEngine {
     const now = new Date();
     const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
 
-    if (this.mode === 'NORMAL') {
+    const multiState = multiNodeEngine.getState();
+    const b2Node = multiState.nodes.find(n => n.id === 'node-blk-b-02');
+    const isB2Isolated = b2Node?.isIsolated || false;
+
+    if (isB2Isolated) {
+      this.currentFlow = 0;
+    }
+    else if (this.mode === 'NORMAL') {
       const noise = Math.floor(Math.sin(this.tickCount * 0.8) * 1.5); // 41 to 44 L/min
       this.currentFlow = 43 + noise;
       this.currentPressure = Number((2.8 + Math.sin(this.tickCount * 0.4) * 0.05).toFixed(1));

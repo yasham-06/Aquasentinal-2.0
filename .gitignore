@@ -22,3 +22,7 @@ dist-isolation
 *.njsproj
 *.sln
 *.sw?
+
+# Scratch temporary files
+scratch/
+

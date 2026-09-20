@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaSentinel 2.0 — Aqua Intelligence Hackday Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-bg: #071A2B;
+      --card-surface: #0B2940;
+      --elevated: #144266;
+      --border-cyan: #245A7D;
+      --cyan: #22D3EE;
+      --blue: #38BDF8;
+      --green: #22C55E;
+      --amber: #F59E0B;
+      --red: #EF4444;
+      --text-white: #F8FAFC;
+      --text-muted: #94A3B8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--navy-bg);
+      color: var(--text-white);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, .font-title, .hero-kpi {
+      font-family: 'Sora', sans-serif;
+    }
+
+    .slide-container {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 2.5rem 3.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .header-eyebrow {
+      font-family: 'Inter', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.25rem;
+    }
+
+    .header-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--text-white);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-banner {
+      background-color: var(--elevated);
+      border: 1px solid var(--cyan);
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      font-size: 1.05rem;
+      color: var(--cyan);
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    .card-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .grid-6 { grid-template-columns: repeat(6, 1fr); }
+
+    .card {
+      background-color: var(--card-surface);
+      border: 1px solid var(--border-cyan);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+
+    .card-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--blue);
+      margin-bottom: 0.5rem;
+    }
+
+    .card-num {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--red);
+      margin-bottom: 0.25rem;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .hero-kpi-box {
+      background: var(--card-surface);
+      border: 1px solid var(--red);
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+
+    .hero-kpi-box.green-kpi {
+      border-color: var(--green);
+    }
+
+    .hero-kpi-val {
+      font-family: 'Sora', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-top: 0.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .pipeline-step {
+      background: var(--card-surface);
+      border: 1px solid var(--border-cyan);
+      border-radius: 6px;
+      padding: 0.75rem;
+      text-align: center;
+    }
+
+    .pipeline-step.active-step {
+      border-color: var(--cyan);
+      background: var(--elevated);
+    }
+
+    .footer-bar {
+      height: 50px;
+      background-color: var(--card-surface);
+      border-top: 1px solid var(--border-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      font-family: 'Inter', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .btn-nav {
+      background: var(--elevated);
+      color: var(--cyan);
+      border: 1px solid var(--border-cyan);
+      padding: 0.4rem 1rem;
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Inter', monospace;
+    }
+    .btn-nav:hover { border-color: var(--cyan); }
+
+    ul.bullet-list {
+      list-style: none;
+      margin-top: 0.5rem;
+    }
+    ul.bullet-list li {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      position: relative;
+      padding-left: 1.2rem;
+    }
+    ul.bullet-list li::before {
+      content: "•";
+      color: var(--cyan);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slide-container">
+    
+    <!-- SLIDE 1 -->
+    <div class="slide active" id="slide-1">
+      <div>
+        <div class="header-eyebrow">AQUA INTELLIGENCE · HACKDAY 1.0 SUBMISSION | SLIDE 01 OF 07</div>
+        <div class="header-title">Water loss is often detected after it becomes expensive.</div>
+
+        <div class="hero-banner">
+          "Hidden leaks and abnormal water consumption can remain difficult to localize when operators rely only on aggregate water readings."
+        </div>
+
+        <div class="card-grid grid-3" style="margin-top: 1.25rem;">
+          <div class="card">
+            <div class="card-num">01</div>
+            <div class="card-title" style="color:var(--text-white)">HIDDEN WATER LOSS</div>
+            <div class="card-desc">Downstream leaks remain invisible behind aggregate supply measurements. Unnoticed baseline breaches compound into thousands of liters lost.</div>
+          </div>
+          <div class="card">
+            <div class="card-num">02</div>
+            <div class="card-title" style="color:var(--text-white)">DELAYED LOCALIZATION</div>
+            <div class="card-desc">Detecting an abnormal reading does not identify which building or zone requires intervention, forcing manual physical site searches.</div>
+          </div>
+          <div class="card">
+            <div class="card-num">03</div>
+            <div class="card-title" style="color:var(--text-white)">NO CLOSED-LOOP VERIFICATION</div>
+            <div class="card-desc">Monitoring alone fails to verify recovery. Operators lack automated proof that shutoff successfully contained the loss.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-color:var(--red); background:var(--navy-bg)">
+        <div class="card-title" style="color:var(--red)">OPERATIONAL FAILURE CHAIN:</div>
+        <div style="font-family:'Inter', sans-serif; font-size:0.9rem; font-weight:700; color:var(--text-white)">
+          SUPPLY GATE &nbsp;──►&nbsp; DISTRIBUTION MANIFOLD &nbsp;──►&nbsp; HIDDEN DOWNSTREAM LOSS &nbsp;──►&nbsp; DELAYED LOCALIZATION &nbsp;──►&nbsp; WATER + FINANCIAL LOSS
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide" id="slide-2">
+      <div>
+        <div class="header-eyebrow">AQUA INTELLIGENCE · HACKDAY 1.0 SUBMISSION | SLIDE 02 OF 07</div>
+        <div class="header-title">Predict the leak. Protect the network.</div>
+
+        <div class="hero-banner" style="text-align:center; font-size:1.1rem; font-weight:700">
+          "AquaSentinel 2.0 — AI-powered water network intelligence"
+        </div>
+
+        <div class="card-grid grid-6" style="margin-bottom: 1rem;">
+          <div class="pipeline-step"><div style="font-family:'Sora', sans-serif; font-size:0.75rem; color:var(--cyan); font-weight:700">01 · DETECT</div><div style="font-size:0.8rem; margin-top:0.25rem">220 L/min</div></div>
+          <div class="pipeline-step"><div style="font-family:'Sora', sans-serif; font-size:0.75rem; color:var(--cyan); font-weight:700">02 · LOCATE</div><div style="font-size:0.8rem; margin-top:0.25rem">Block B</div></div>
+          <div class="pipeline-step"><div style="font-family:'Sora', sans-serif; font-size:0.75rem; color:var(--cyan); font-weight:700">03 · EXPLAIN</div><div style="font-size:0.8rem; margin-top:0.25rem">+18.4% Var</div></div>
+          <div class="pipeline-step active-step"><div style="font-family:'Sora', sans-serif; font-size:0.75rem; color:var(--red); font-weight:700">04 · ACTUATE</div><div style="font-size:0.8rem; margin-top:0.25rem">Isolate V-02</div></div>
+          <div class="pipeline-step"><div style="font-family:'Sora', sans-serif; font-size:0.75rem; color:var(--green); font-weight:700">05 · VERIFY</div><div style="font-size:0.8rem; margin-top:0.25rem">0 L/min</div></div>
+          <div class="pipeline-step"><div style="font-family:'Sora', sans-serif; font-size:0.75rem; color:var(--green); font-weight:700">06 · QUANTIFY</div><div style="font-size:0.8rem; margin-top:0.25rem">18,360 L</div></div>
+        </div>
+
+        <div class="card-grid grid-2">
+          <div class="hero-kpi-box">
+            <div class="card-title" style="color:var(--red)">HERO METRIC · DIFFERENTIAL LEAK BREACH</div>
+            <div class="hero-kpi-val" style="color:var(--red)">+51 L/min</div>
+            <div class="card-desc">Main Gateway Inflow: 220 L/min | Accounted Outflows: 169 L/min<br>Observed Block B Flow: 94 L/min (Baseline: 43 L/min, Threshold: 64.5 L/min)</div>
+          </div>
+          <div class="hero-kpi-box green-kpi">
+            <div class="card-title" style="color:var(--green)">HERO METRIC · PREVENTED WATER LOSS</div>
+            <div class="hero-kpi-val" style="color:var(--green)">18,360 Liters</div>
+            <div class="card-desc">Avoided Financial Exposure: ₹826.20 (6h loss projection)<br>Post-Isolation Flow Imbalance: 0 L/min (Verified Containment)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:var(--elevated); border-color:var(--cyan); text-align:center">
+        <div style="font-family:'Sora', sans-serif; font-weight:700; color:var(--cyan)">CLOSED-LOOP WORKFLOW EXAMPLE:</div>
+        <div style="font-size:0.85rem; color:var(--text-white); margin-top:0.25rem">
+          +51 L/min Anomaly &nbsp;──►&nbsp; Block B Identified &nbsp;──►&nbsp; V-02 Recommended &nbsp;──►&nbsp; Solenoid Isolation &nbsp;──►&nbsp; 0 L/min Imbalance
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide" id="slide-3">
+      <div>
+        <div class="header-eyebrow">AQUA INTELLIGENCE · HACKDAY 1.0 SUBMISSION | SLIDE 03 OF 07</div>
+        <div class="header-title">One intelligence layer for distributed water infrastructure.</div>
+
+        <div class="card-grid grid-2" style="margin-top: 1rem;">
+          <div class="card">
+            <div class="card-title">01 · EDUCATIONAL CAMPUSES</div>
+            <div class="card-desc">Universities, schools, and multi-building institutions with sprawling sub-metered water distribution networks.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">02 · COMMERCIAL & HEALTHCARE</div>
+            <div class="card-desc">Hospitals, hotels, shopping complexes, and enterprise office campuses requiring uninterrupted water uptime.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">03 · INDUSTRIAL FACILITIES</div>
+            <div class="card-desc">Manufacturing sites, processing plants, and data centers where continuous flow monitoring and zero loss are vital.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">04 · MUNICIPAL & SMART CITIES</div>
+            <div class="card-desc">Distributed municipal water networks needing centralized differential audits and remote zone valve control.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:var(--elevated); border-color:var(--cyan); text-align:center; font-family:'Sora', sans-serif">
+        <span style="color:var(--cyan); font-weight:700">OPERATOR WORKFLOW:</span> &nbsp; MONITOR &nbsp;──►&nbsp; DETECT &nbsp;──►&nbsp; LOCATE &nbsp;──►&nbsp; ISOLATE &nbsp;──►&nbsp; VERIFY
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide" id="slide-4">
+      <div>
+        <div class="header-eyebrow">AQUA INTELLIGENCE · HACKDAY 1.0 SUBMISSION | SLIDE 04 OF 07</div>
+        <div class="header-title">HOW AQUASENTINEL WORKS — TECHNICAL APPROACH & ARCHITECTURE</div>
+
+        <div class="card-grid grid-2">
+          <div class="card">
+            <div class="card-title" style="color:var(--cyan)">END-TO-END ARCHITECTURE PIPELINE</div>
+            <ul class="bullet-list">
+              <li><strong>01 · DISTRIBUTED TELEMETRY STREAM:</strong> Sub-meter flow, pressure (2.8 bar), and tank level.</li>
+              <li><strong>02 · DIFFERENTIAL FLOW ENGINE:</strong> Unaccounted Loss = Max(0, Main Inflow - Sum Outflows).</li>
+              <li><strong>03 · PREDICTIVE RISK ENGINE:</strong> Multi-indicator evaluation (+1.5x flow breach +18.4% pressure drop var).</li>
+              <li><strong>04 · SPATIAL TOPOLOGY:</strong> 6-node hierarchical tree: Main Supply ──► Manifold ──► Risers ──► Solenoids.</li>
+              <li><strong>05 · REMOTE SOLENOID ACTUATION:</strong> State machine: OPEN ──► ISOLATING ──► CLOSED (Valve #V-02).</li>
+              <li><strong>06 · RECOVERY & ESG ANALYTICS:</strong> Automated 0 L/min imbalance audit, 18,360 L volume tracking.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-title" style="color:var(--green)">TECHNOLOGY STACK & IMPLEMENTATION STATUS</div>
+            <ul class="bullet-list">
+              <li><strong>FRONTEND TECH STACK:</strong> React 18 • TypeScript • Tailwind CSS • Recharts • Vite • Lucide Icons</li>
+              <li><strong>INTELLIGENCE ENGINE:</strong> Differential Flow Analysis • Anomaly Engine • Predictive Risk Engine • Explainable Diagnostics</li>
+              <li><strong>CURRENT PROTOTYPE REALITY:</strong> Simulated distributed telemetry + software-based valve actuation state machine</li>
+              <li><strong>FUTURE HARDWARE INTEGRATION:</strong> ESP32 microcontrollers + RS485 Modbus RTU / MQTT over LoRaWAN + physical valves</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-family:'Inter', monospace; font-size:0.8rem; color:var(--text-muted); text-align:center">
+        Single source of truth architecture verified live
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide" id="slide-5">
+      <div>
+        <div class="header-eyebrow">AQUA INTELLIGENCE · HACKDAY 1.0 SUBMISSION | SLIDE 05 OF 07</div>
+        <div class="header-title">Reduce water loss. Reduce response time. Quantify impact.</div>
+
+        <div class="hero-banner">
+          CORE COMMERCIAL VALUE PROPOSITION:<br>
+          <span style="font-size:0.95rem; font-style:normal; color:var(--text-white); font-weight:700">
+            "Reduce avoidable water loss while providing facility managers with one unified system to detect, locate, respond, and quantify operational impact."
+          </span>
+        </div>
+
+        <div class="card-grid grid-2" style="margin-bottom:1rem">
+          <div class="card">
+            <div class="card-title">B2B / INSTITUTIONAL MARKET</div>
+            <ul class="bullet-list">
+              <li>University & School Campuses (High volume sub-metering)</li>
+              <li>Hospitals & Healthcare Facilities (Critical uptime required)</li>
+              <li>Hotels & Commercial Real Estate (Avoid costly water damage)</li>
+              <li>Industrial Manufacturing & Data Centers (Process water safety)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">B2G / PUBLIC UTILITIES MARKET</div>
+            <ul class="bullet-list">
+              <li>Municipal Water Distribution Networks (NRW reduction)</li>
+              <li>Smart-City Infrastructure Mandates (Centralized telemetry)</li>
+              <li>Public Government Institutions (ESG & sustainability compliance)</li>
+              <li>District Water Management Authorities (Regional telemetry)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-color:var(--green)">
+        <div class="card-title" style="color:var(--green)">BUSINESS MODEL: HYBRID HARDWARE-ENABLED SaaS (SaaS + IoT + ANALYTICS)</div>
+        <div style="font-family:'Inter', monospace; font-size:0.85rem; color:var(--cyan); margin-top:0.25rem">
+          SENSORS & GATEWAYS &nbsp;──►&nbsp; AQUASENTINEL PLATFORM &nbsp;──►&nbsp; MONITORING SUBSCRIPTION &nbsp;──►&nbsp; ADVANCED ESG ANALYTICS
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide" id="slide-6">
+      <div>
+        <div class="header-eyebrow">AQUA INTELLIGENCE · HACKDAY 1.0 SUBMISSION | SLIDE 06 OF 07</div>
+        <div class="header-title">SCALABILITY & FUTURE — SCALING WATER INFRASTRUCTURE INTELLIGENCE</div>
+
+        <div class="hero-banner" style="text-align:center">
+          MULTI-STAGE SCALING ROADMAP:<br>
+          <span style="font-family:'Sora', sans-serif; font-size:0.95rem; font-style:normal; color:var(--green); font-weight:700">
+            CAMPUS &nbsp;──►&nbsp; MULTI-CAMPUS &nbsp;──►&nbsp; SMART BUILDINGS &nbsp;──►&nbsp; INDUSTRIAL &nbsp;──►&nbsp; MUNICIPAL
+          </span>
+        </div>
+
+        <div class="card-grid grid-4">
+          <div class="card">
+            <div class="card-title">01 · SENSORS</div>
+            <div class="card-desc">Deploy RS485 Modbus flow meters and pressure transducers paired with ESP32 gateway nodes.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">02 · CONNECTIVITY</div>
+            <div class="card-desc">Implement MQTT over TLS / LoRaWAN communication with local edge-actuation fail-safes.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">03 · CLOUD INTELLIGENCE</div>
+            <div class="card-desc">Scale multi-tenant cloud telemetry processing with automated differential flow & risk scoring.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">04 · PREDICTIVE ANALYTICS</div>
+            <div class="card-desc">Train models on historical telemetry to identify emerging pressure and flow anomalies before they escalate.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-family:'Inter', monospace; font-size:0.8rem; color:var(--text-muted); text-align:center">
+        Modular scaling architecture from single campus to smart city
+      </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide" id="slide-7">
+      <div>
+        <div class="header-eyebrow">AQUA INTELLIGENCE · HACKDAY 1.0 SUBMISSION | SLIDE 07 OF 07</div>
+        <div class="header-title">IF WE HAD MORE TIME... — FUTURE DEVELOPMENT PRIORITIES</div>
+
+        <div class="hero-banner" style="text-align:center; font-size:1.1rem; font-weight:700">
+          "From prototype intelligence to autonomous water infrastructure."
+        </div>
+
+        <div class="card-grid grid-2" style="margin-top:0.5rem">
+          <div class="card">
+            <div class="card-title" style="color:var(--cyan)">01 · TODAY (Software Prototype)</div>
+            <div class="card-desc">Simulated distributed telemetry, differential flow engine, software-based solenoid actuation, and explainable AI risk diagnostics.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">02 · NEXT (Real Sensors + Valves)</div>
+            <div class="card-desc">Connect ESP32 microcontrollers, RS485 Modbus ultrasonic flow meters, and physical motorized 12V shutoff valves.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">03 · FUTURE (Predictive ML + Controlled Response)</div>
+            <div class="card-desc">Train models on historical telemetry to identify emerging pressure and flow anomalies before they escalate, with controlled autonomous shutoff.</div>
+          </div>
+          <div class="card">
+            <div class="card-title" style="color:var(--green)">04 · VISION (Proactive Water Infrastructure)</div>
+            <div class="card-desc">Scale to multi-campus GIS digital twins, turning reactive monitoring into proactive infrastructure intelligence.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-color:var(--green); text-align:center">
+        <div class="card-title" style="color:var(--green)">CLOSING TAGLINE:</div>
+        <div style="font-family:'Sora', sans-serif; font-size:1.1rem; font-weight:700; color:var(--text-white)">
+          "Detect today. Predict tomorrow. Protect every drop."
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bar">
+    <div>AquaSentinel 2.0 — Aqua Intelligence Submission Deck</div>
+    <div>Slide <span id="slide-num">1</span> of 7</div>
+    <div>
+      <button class="btn-nav" id="btn-prev">← PREV</button>
+      <button class="btn-nav" id="btn-next">NEXT →</button>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 7;
+
+    function showSlide(n) {
+      document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+      const active = document.getElementById(`slide-${n}`);
+      if (active) active.classList.add('active');
+      document.getElementById('slide-num').innerText = n;
+    }
+
+    document.getElementById('btn-prev').addEventListener('click', () => {
+      if (currentSlide > 1) {
+        currentSlide--;
+        showSlide(currentSlide);
+      }
+    });
+
+    document.getElementById('btn-next').addEventListener('click', () => {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        showSlide(currentSlide);
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === 'Space') {
+        if (currentSlide < totalSlides) {
+          currentSlide++;
+          showSlide(currentSlide);
+        }
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        if (currentSlide > 1) {
+          currentSlide--;
+          showSlide(currentSlide);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

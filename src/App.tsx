@@ -10,15 +10,19 @@ import {
   AIAnalysis,
   MeshNodeInfo,
   RemoteValve,
-  MicroPressurePoint,
   EsgMetrics
 } from './types';
 import { telemetryEngine } from './services/telemetryEngine';
 import { TelemetryService } from './services/telemetryService';
 import { multiNodeEngine, MultiNodeState } from './services/multiNodeEngine';
-import { V2Navbar } from './components/V2Navbar';
+
+// V2 Shell & Layout Components
+import { V2Header } from './components/V2Header';
+import { V2Sidebar } from './components/V2Sidebar';
+import { V2Footer } from './components/V2Footer';
 import { DemoControlBar } from './components/DemoControlBar';
-import { LandingPage } from './pages/LandingPage';
+
+// Pages
 import { V2DashboardPage } from './pages/V2DashboardPage';
 import { TopologyPage } from './pages/TopologyPage';
 import { ValvesPage } from './pages/ValvesPage';
@@ -33,6 +37,14 @@ import { SettingsPage } from './pages/SettingsPage';
 export function App() {
   const [currentPage, setCurrentPage] = useState<PageType>('dashboard');
   const [simulationMode, setSimulationMode] = useState<SimulationMode>('NORMAL');
+  const [detectTriggerCount, setDetectTriggerCount] = useState<number>(0);
+
+  const handleNavigate = (page: PageType) => {
+    if (page === 'dashboard') {
+      setDetectTriggerCount(prev => prev + 1);
+    }
+    setCurrentPage(page);
+  };
 
   // Core telemetry engine state
   const [metrics, setMetrics] = useState<SystemMetrics>(TelemetryService.getMetrics());
@@ -88,115 +100,153 @@ export function App() {
     multiNodeEngine.toggleValve(valveId);
   };
 
-  const handleCreateTicket = (): TicketItem => {
-    return telemetryEngine.createNextTicket();
-  };
-
   const handleUpdateTicketStatus = (ticketId: string, status: TicketItem['status']) => {
     telemetryEngine.updateTicketStatus(ticketId, status);
   };
 
-  const activeAlertCount = alerts.filter(a => a.status === 'ACTIVE').length;
+  const targetValve = multiNodeState.valves.find(v => v.id === 'v-blk-b-02');
+  const isTargetValveClosed = targetValve?.status === 'CLOSED';
+  const isLeakActive = (simulationMode === 'LEAK' || multiNodeState.hasDifferentialLeak || multiNodeState.differentialLeakFlow > 5) && !isTargetValveClosed;
+  const activeAlertCount = isLeakActive ? 1 : 0;
 
   return (
-    <div className="min-h-screen bg-navy-950 text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#061421] text-[#F8FAFC] flex flex-col font-sans select-none overflow-x-hidden">
       
-      {/* 2.0 Navigation Bar */}
-      <V2Navbar
-        currentPage={currentPage}
-        onNavigate={setCurrentPage}
-        simulationMode={simulationMode}
-        activeAlertCount={activeAlertCount}
-      />
+      {/* 2.0 Global Header */}
+      <V2Header simulationMode={simulationMode} />
 
-      {/* Demo Simulation Toolbar */}
-      <DemoControlBar
-        simulationMode={simulationMode}
-        onModeChange={handleModeChange}
-        onReset={handleReset}
-      />
-
-      {/* Main Page Render */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+      {/* Main Shell Body */}
+      <div className="flex flex-1 min-h-0 overflow-hidden">
         
-        {currentPage === 'dashboard' && (
-          <V2DashboardPage
-            telemetryHistory={telemetryHistory}
-            latestTelemetry={latestTelemetry}
-            aiAnalysis={aiAnalysis}
-            nodes={multiNodeState.nodes}
-            valves={multiNodeState.valves}
-            esgMetrics={multiNodeState.esgMetrics}
-            differentialLeakFlow={multiNodeState.differentialLeakFlow}
-            hasDifferentialLeak={multiNodeState.hasDifferentialLeak}
+        {/* Left Vertical Sidebar */}
+        <V2Sidebar
+          currentPage={currentPage}
+          onNavigate={handleNavigate}
+          activeAlertCount={activeAlertCount}
+        />
+
+        {/* Central Content Column */}
+        <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+          
+          {/* Interactive Simulation Console Control Bar */}
+          <DemoControlBar
             simulationMode={simulationMode}
-            onNavigate={setCurrentPage}
-            onToggleValve={handleToggleValve}
-            onSimulateLeak={() => handleModeChange('LEAK')}
+            onModeChange={handleModeChange}
+            onReset={handleReset}
           />
-        )}
 
-        {currentPage === 'topology' && (
-          <TopologyPage
-            nodes={multiNodeState.nodes}
-            valves={multiNodeState.valves}
-            onToggleValve={handleToggleValve}
-            differentialLeakFlow={multiNodeState.differentialLeakFlow}
-            hasDifferentialLeak={multiNodeState.hasDifferentialLeak}
-          />
-        )}
+          {/* Main Working Canvas */}
+          <main className="flex-1 p-5 md:p-6 lg:p-8 max-w-[1600px] w-full mx-auto space-y-6">
+            
+            {currentPage === 'dashboard' && (
+              <V2DashboardPage
+                telemetryHistory={telemetryHistory}
+                latestTelemetry={latestTelemetry}
+                aiAnalysis={aiAnalysis}
+                nodes={multiNodeState.nodes}
+                valves={multiNodeState.valves}
+                esgMetrics={multiNodeState.esgMetrics}
+                differentialLeakFlow={multiNodeState.differentialLeakFlow}
+                hasDifferentialLeak={multiNodeState.hasDifferentialLeak}
+                simulationMode={simulationMode}
+                onNavigate={handleNavigate}
+                onToggleValve={handleToggleValve}
+                onSimulateLeak={() => handleModeChange('LEAK')}
+                detectTriggerCount={detectTriggerCount}
+              />
+            )}
 
-        {currentPage === 'valves' && (
-          <ValvesPage
-            valves={multiNodeState.valves}
-            onToggleValve={handleToggleValve}
-          />
-        )}
+            {currentPage === 'topology' && (
+              <TopologyPage
+                nodes={multiNodeState.nodes}
+                valves={multiNodeState.valves}
+                onToggleValve={handleToggleValve}
+                differentialLeakFlow={multiNodeState.differentialLeakFlow}
+                hasDifferentialLeak={multiNodeState.hasDifferentialLeak}
+                onNavigate={handleNavigate}
+              />
+            )}
 
-        {currentPage === 'predictive' && (
-          <PredictiveAiPage
-            pressurePoints={multiNodeState.pressurePoints}
-          />
-        )}
+            {currentPage === 'valves' && (
+              <ValvesPage
+                valves={multiNodeState.valves}
+                nodes={multiNodeState.nodes}
+                esgMetrics={multiNodeState.esgMetrics}
+                differentialLeakFlow={multiNodeState.differentialLeakFlow}
+                hasDifferentialLeak={multiNodeState.hasDifferentialLeak}
+                simulationMode={simulationMode}
+                onToggleValve={handleToggleValve}
+                onNavigate={handleNavigate}
+              />
+            )}
 
-        {currentPage === 'esg' && (
-          <EsgPage
-            esgMetrics={multiNodeState.esgMetrics}
-          />
-        )}
+            {currentPage === 'predictive' && (
+              <PredictiveAiPage
+                pressurePoints={multiNodeState.pressurePoints}
+                valves={multiNodeState.valves}
+                nodes={multiNodeState.nodes}
+                esgMetrics={multiNodeState.esgMetrics}
+                differentialLeakFlow={multiNodeState.differentialLeakFlow}
+                hasDifferentialLeak={multiNodeState.hasDifferentialLeak}
+                simulationMode={simulationMode}
+                onNavigate={handleNavigate}
+              />
+            )}
 
-        {currentPage === 'monitoring' && (
-          <MonitoringPage
-            buildings={buildings}
-            latestTelemetry={latestTelemetry}
-          />
-        )}
+            {currentPage === 'esg' && (
+              <EsgPage
+                esgMetrics={multiNodeState.esgMetrics}
+                nodes={multiNodeState.nodes}
+                valves={multiNodeState.valves}
+                differentialLeakFlow={multiNodeState.differentialLeakFlow}
+                hasDifferentialLeak={multiNodeState.hasDifferentialLeak}
+                simulationMode={simulationMode}
+                onNavigate={handleNavigate}
+              />
+            )}
 
-        {currentPage === 'alerts' && (
-          <AlertsPage
-            alerts={alerts}
-            onNavigate={setCurrentPage}
-          />
-        )}
+            {currentPage === 'monitoring' && (
+              <MonitoringPage
+                buildings={buildings}
+                latestTelemetry={latestTelemetry}
+              />
+            )}
 
-        {currentPage === 'analytics' && (
-          <AnalyticsPage />
-        )}
+            {currentPage === 'alerts' && (
+              <AlertsPage
+                alerts={alerts}
+                onNavigate={handleNavigate}
+              />
+            )}
 
-        {currentPage === 'tickets' && (
-          <TicketsPage
-            tickets={tickets}
-            onCreateTicket={(ticket) => {
-              telemetryEngine.createNextTicket();
-            }}
-            onUpdateStatus={handleUpdateTicketStatus}
-          />
-        )}
+            {currentPage === 'analytics' && (
+              <AnalyticsPage 
+                onNavigate={handleNavigate}
+              />
+            )}
 
-        {currentPage === 'settings' && (
-          <SettingsPage />
-        )}
-      </main>
+            {currentPage === 'tickets' && (
+              <TicketsPage
+                tickets={tickets}
+                onCreateTicket={() => {
+                  telemetryEngine.createNextTicket();
+                }}
+                onUpdateStatus={handleUpdateTicketStatus}
+              />
+            )}
+
+            {currentPage === 'settings' && (
+              <SettingsPage />
+            )}
+
+          </main>
+
+          {/* Global Footer */}
+          <V2Footer />
+
+        </div>
+
+      </div>
 
     </div>
   );

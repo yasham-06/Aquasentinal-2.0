@@ -4,25 +4,42 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 overflow-x-hidden font-sans;
+    background-color: #061421;
+    color: #F8FAFC;
+    overflow-x: hidden;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 }
 
-/* Industrial control center scrollbars */
+/* Industrial control center custom scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #061421;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #163B55;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #22D3EE;
+}
+
+/* Custom chart tooltips and subtle grid helpers */
+.recharts-default-tooltip {
+  background-color: #0B2134 !important;
+  border-color: #163B55 !important;
+  border-radius: 8px !important;
+  color: #F8FAFC !important;
+}
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: #163B55 !important;
+  stroke-dasharray: 3 3;
 }
