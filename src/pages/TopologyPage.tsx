@@ -54,25 +54,25 @@ export const TopologyPage: React.FC<TopologyPageProps> = ({
     <div className="space-y-6 pb-12 animate-fade-in">
       
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0B2134] p-5 rounded-2xl border border-[#163B55]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0B1A28] p-6 rounded-3xl border border-[#183C5A] shadow-xl">
         <div>
-          <div className="flex items-center space-x-2 text-[#22D3EE] font-mono text-xs font-semibold uppercase tracking-wider mb-1">
-            <Layers className="w-4 h-4" />
+          <div className="flex items-center space-x-2 text-[#22D3EE] font-mono text-xs font-bold uppercase tracking-wider mb-1">
+            <Layers className="w-4 h-4 text-[#22D3EE]" />
             <span>Campus Mesh Architecture · Spatial Topology Control</span>
           </div>
-          <h1 className="text-xl font-display font-bold text-[#F8FAFC]">Water Network Operational Topology</h1>
-          <p className="text-[#94A3B8] text-xs mt-0.5">
+          <h1 className="text-xl sm:text-2xl font-display font-extrabold text-[#F8FAFC]">Water Network Operational Topology</h1>
+          <p className="text-[#94A3B8] text-xs mt-1">
             Spatial flow mapping: MAIN SUPPLY → CAMPUS MANIFOLD → ZONE BRANCHES → ACTUATION VALVES.
           </p>
         </div>
 
         {/* Real-time Audit Status Badge */}
-        <div className={`px-4 py-2.5 rounded-xl border flex items-center space-x-3 transition-all ${
+        <div className={`px-4 py-2.5 rounded-2xl border flex items-center space-x-3 transition-all ${
           isLeakActive 
-            ? 'bg-[#081A2B] border-[#EF4444]/80 text-[#EF4444] shadow-md shadow-[#EF4444]/10' 
+            ? 'bg-[#040D17] border-[#EF4444]/80 text-[#EF4444] shadow-md shadow-[#EF4444]/10' 
             : isIsolated
-            ? 'bg-[#081A2B] border-[#22D3EE]/80 text-[#22D3EE]'
-            : 'bg-[#081A2B] border-[#22C55E]/80 text-[#22C55E]'
+            ? 'bg-[#040D17] border-[#22D3EE]/80 text-[#22D3EE]'
+            : 'bg-[#040D17] border-[#22C55E]/80 text-[#22C55E]'
         }`}>
           {isLeakActive ? (
             <ShieldAlert className="w-5 h-5 text-[#EF4444] animate-pulse flex-shrink-0" />
@@ -96,7 +96,7 @@ export const TopologyPage: React.FC<TopologyPageProps> = ({
       </div>
 
       {/* Main Spatial Network Flow Topology (The Centerpiece Diagram) */}
-      <div className="bg-[#0B2134] border border-[#163B55] p-6 rounded-2xl space-y-6">
+      <div className="bg-[#0D2032] border border-[#183C5A] p-6 rounded-3xl space-y-6 shadow-xl">
         
         <div className="flex items-center justify-between border-b border-[#163B55] pb-3">
           <div className="flex items-center space-x-2">

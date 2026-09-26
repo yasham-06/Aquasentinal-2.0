@@ -102,38 +102,38 @@ export const ValvesPage: React.FC<ValvesPageProps> = ({
     <div className="space-y-6 pb-12 animate-fade-in">
       
       {/* HEADER BANNER */}
-      <div className="bg-[#0B2134] p-5 rounded-2xl border border-[#163B55] flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[#0B1A28] p-6 rounded-3xl border border-[#183C5A] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
         <div>
-          <div className="flex items-center space-x-2 text-[#22D3EE] font-mono text-xs font-semibold uppercase tracking-wider mb-1">
-            <Sliders className="w-4 h-4" />
+          <div className="flex items-center space-x-2 text-[#22D3EE] font-mono text-xs font-bold uppercase tracking-wider mb-1">
+            <Sliders className="w-4 h-4 text-[#22D3EE]" />
             <span>Industrial Actuation Layer · Solenoid Control Console</span>
           </div>
-          <h1 className="text-xl font-display font-bold text-[#F8FAFC]">REMOTE VALVE CONTROL CENTER</h1>
-          <p className="text-[#94A3B8] text-xs mt-0.5">
+          <h1 className="text-xl sm:text-2xl font-display font-extrabold text-[#F8FAFC]">REMOTE VALVE CONTROL CENTER</h1>
+          <p className="text-[#94A3B8] text-xs mt-1">
             Remote isolation and water-loss prevention with sub-second solenoid trip rules.
           </p>
         </div>
 
         {/* Small Status Indicators */}
         <div className="flex items-center space-x-3 font-mono text-xs">
-          <div className="bg-[#081A2B] px-3 py-2 rounded-xl border border-[#163B55]">
-            <span className="text-[#94A3B8] text-[10px] block uppercase">VALVES ONLINE</span>
+          <div className="bg-[#040D17] px-3.5 py-2 rounded-xl border border-[#183C5A]">
+            <span className="text-[#94A3B8] text-[10px] block uppercase font-mono">VALVES ONLINE</span>
             <span className="text-[#22D3EE] font-bold">{onlineValvesCount} / {onlineValvesCount}</span>
           </div>
-          <div className="bg-[#081A2B] px-3 py-2 rounded-xl border border-[#163B55]">
-            <span className="text-[#94A3B8] text-[10px] block uppercase">ACTIVE ISOLATION</span>
+          <div className="bg-[#040D17] px-3.5 py-2 rounded-xl border border-[#183C5A]">
+            <span className="text-[#94A3B8] text-[10px] block uppercase font-mono">ACTIVE ISOLATION</span>
             <span className={activeIsolationCount > 0 ? 'text-[#22D3EE] font-bold' : 'text-[#F8FAFC]'}>
               {activeIsolationCount} {activeIsolationCount === 1 ? 'Zone' : 'Zones'}
             </span>
           </div>
-          <div className={`px-3 py-2 rounded-xl border font-bold ${
+          <div className={`px-3.5 py-2 rounded-xl border font-bold ${
             isLeakActive
-              ? 'bg-[#081A2B] border-[#EF4444]/60 text-[#EF4444] animate-pulse'
+              ? 'bg-[#040D17] border-[#EF4444]/60 text-[#EF4444] animate-pulse'
               : isV02Closed
-              ? 'bg-[#081A2B] border-[#22D3EE]/60 text-[#22D3EE]'
-              : 'bg-[#081A2B] border-[#22C55E]/60 text-[#22C55E]'
+              ? 'bg-[#040D17] border-[#22D3EE]/60 text-[#22D3EE]'
+              : 'bg-[#040D17] border-[#22C55E]/60 text-[#22C55E]'
           }`}>
-            <span className="text-[#94A3B8] text-[10px] block uppercase font-normal">NETWORK STATUS</span>
+            <span className="text-[#94A3B8] text-[10px] block uppercase font-mono font-normal">NETWORK STATUS</span>
             <span>{isLeakActive ? 'ANOMALY DETECTED' : isV02Closed ? 'ZONE ISOLATED' : 'NORMAL'}</span>
           </div>
         </div>

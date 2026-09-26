@@ -63,61 +63,61 @@ export const PredictiveAiPage: React.FC<PredictiveAiPageProps> = ({
     <div className="space-y-6 pb-12 animate-fade-in">
       
       {/* HEADER BANNER */}
-      <div className="bg-[#0D1B2A] p-5 rounded-lg border border-[#243B53] flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[#0B1A28] p-6 rounded-3xl border border-[#183C5A] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
         <div>
-          <div className="flex items-center space-x-2 text-[#22D3EE] font-mono text-xs font-semibold uppercase tracking-wider mb-1">
-            <Zap className="w-4 h-4" />
+          <div className="flex items-center space-x-2 text-[#22D3EE] font-mono text-xs font-bold uppercase tracking-wider mb-1">
+            <Zap className="w-4 h-4 text-[#22D3EE]" />
             <span>Explainable Risk Architecture · Diagnostic Engine</span>
           </div>
-          <h1 className="text-xl font-bold text-[#F1F5F9]">PREDICTIVE AI INTELLIGENCE CENTER</h1>
-          <p className="text-[#94A3B8] text-xs mt-0.5">
+          <h1 className="text-xl sm:text-2xl font-display font-extrabold text-[#F8FAFC]">PREDICTIVE AI INTELLIGENCE CENTER</h1>
+          <p className="text-[#94A3B8] text-xs mt-1">
             Explainable risk analysis for water-network anomalies from raw telemetry to actionable water-loss risk.
           </p>
         </div>
 
         {/* Top Status Indicators */}
         <div className="flex items-center space-x-3 font-mono text-xs">
-          <div className="bg-[#07111F] px-3 py-2 rounded border border-[#243B53]">
-            <span className="text-[#94A3B8] text-[10px] block uppercase">AI ENGINE</span>
+          <div className="bg-[#040D17] px-3.5 py-2 rounded-xl border border-[#183C5A]">
+            <span className="text-[#94A3B8] text-[10px] block uppercase font-mono">AI ENGINE</span>
             <span className="text-[#22D3EE] font-bold">ONLINE</span>
           </div>
-          <div className="bg-[#07111F] px-3 py-2 rounded border border-[#243B53]">
-            <span className="text-[#94A3B8] text-[10px] block uppercase">RISK MODEL</span>
+          <div className="bg-[#040D17] px-3.5 py-2 rounded-xl border border-[#183C5A]">
+            <span className="text-[#94A3B8] text-[10px] block uppercase font-mono">RISK MODEL</span>
             <span className="text-[#22C55E] font-bold">ACTIVE (94% CONF)</span>
           </div>
-          <div className={`px-3 py-2 rounded border font-bold ${
+          <div className={`px-3.5 py-2 rounded-xl border font-bold ${
             isLeakActive
-              ? 'bg-[#07111F] border-[#EF4444]/60 text-[#EF4444] animate-pulse'
+              ? 'bg-[#040D17] border-[#EF4444]/60 text-[#EF4444] animate-pulse'
               : isIsolated
-              ? 'bg-[#07111F] border-[#22D3EE]/60 text-[#22D3EE]'
-              : 'bg-[#07111F] border-[#22C55E]/60 text-[#22C55E]'
+              ? 'bg-[#040D17] border-[#22D3EE]/60 text-[#22D3EE]'
+              : 'bg-[#040D17] border-[#22C55E]/60 text-[#22C55E]'
           }`}>
-            <span className="text-[#94A3B8] text-[10px] block uppercase font-normal">NETWORK STATUS</span>
+            <span className="text-[#94A3B8] text-[10px] block uppercase font-mono font-normal">NETWORK STATUS</span>
             <span>{isLeakActive ? 'ANOMALY DETECTED' : isIsolated ? 'ZONE ISOLATED' : 'NORMAL'}</span>
           </div>
         </div>
       </div>
 
       {/* PRIMARY RISK SUMMARY PANEL */}
-      <div className={`p-6 rounded-lg border transition-all ${
+      <div className={`p-6 rounded-3xl border transition-all shadow-xl ${
         isLeakActive
-          ? 'bg-[#0D1B2A] border-[#EF4444] shadow-lg shadow-[#EF4444]/10'
+          ? 'bg-[#0D2032] border-[#EF4444] shadow-lg shadow-[#EF4444]/10'
           : isIsolated
-          ? 'bg-[#0D1B2A] border-[#22D3EE]'
-          : 'bg-[#0D1B2A] border-[#243B53]'
+          ? 'bg-[#0D2032] border-[#22D3EE]'
+          : 'bg-[#0D2032] border-[#183C5A]'
       }`}>
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#243B53] pb-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#183C5A] pb-4">
           <div>
             <div className="text-[10px] font-mono text-[#94A3B8] uppercase font-bold tracking-wider">
               PRIMARY RISK DIAGNOSTIC SUMMARY
             </div>
             <div className="flex items-center space-x-3 mt-1">
-              <span className={`text-2xl font-mono font-bold ${
+              <span className={`text-2xl font-display font-extrabold ${
                 isLeakActive ? 'text-[#EF4444]' : isIsolated ? 'text-[#22D3EE]' : 'text-[#22C55E]'
               }`}>
                 {isLeakActive ? 'HIGH RISK' : isIsolated ? 'INCIDENT RESOLVED' : 'LOW RISK'}
               </span>
-              <span className={`px-2.5 py-0.5 rounded text-xs font-mono font-bold border ${
+              <span className={`px-3 py-1 rounded-xl text-xs font-mono font-bold border ${
                 isLeakActive 
                   ? 'bg-[#EF4444]/20 text-[#EF4444] border-[#EF4444]/40 animate-pulse' 
                   : isIsolated
@@ -127,7 +127,7 @@ export const PredictiveAiPage: React.FC<PredictiveAiPageProps> = ({
                 {isLeakActive ? 'Block B Utility Line' : isIsolated ? 'Zone Block B Isolated' : 'System Baseline Nominal'}
               </span>
             </div>
-            <p className="text-xs font-sans text-[#94A3B8] mt-1">
+            <p className="text-xs font-sans text-[#94A3B8] mt-1.5">
               {isLeakActive
                 ? 'Probable downstream water loss detected in Block B Floor 2. High differential flow imbalance observed.'
                 : isIsolated

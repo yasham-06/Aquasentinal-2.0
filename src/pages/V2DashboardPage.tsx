@@ -250,300 +250,299 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
   return (
     <div className="space-y-6 animate-fade-in text-[#F8FAFC]">
       
-      {/* 1. HERO SECTION matching reference */}
-      <div>
-        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-none">
-          Predict the leak. <span className="text-[#22D3EE]">Protect the network.</span>
-        </h1>
-        <p className="text-[#94A3B8] text-xs sm:text-sm mt-2 font-sans">
-          Real-time detection. AI-powered insights. Smarter water infrastructure.
-        </p>
+      {/* 1. HERO TITLE HEADER */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0B1A28] border border-[#183C5A] p-6 rounded-3xl shadow-xl">
+        <div>
+          <div className="flex items-center space-x-2 text-xs font-mono text-[#22D3EE] font-bold uppercase tracking-wider mb-1">
+            <span className="w-2 h-2 rounded-full bg-[#22D3EE] animate-pulse" />
+            <span>Water Network Control Operations</span>
+          </div>
+          <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#F8FAFC]">
+            Predict the leak. <span className="text-[#22D3EE]">Protect the network.</span>
+          </h1>
+          <p className="text-[#94A3B8] text-xs sm:text-sm mt-1 font-sans">
+            Real-time differential flow telemetry, AI diagnostic reasoning, and closed-loop isolation.
+          </p>
+        </div>
+
+        <div className="flex items-center space-x-3">
+          <button 
+            onClick={onSimulateLeak}
+            className={`px-4 py-2.5 rounded-xl font-display text-xs font-bold transition-all shadow-md flex items-center space-x-2 ${
+              isLeakActive 
+                ? 'bg-[#EF4444] text-white shadow-[#EF4444]/30 animate-pulse'
+                : 'bg-[#22D3EE] text-[#06101E] hover:bg-[#06B6D4] shadow-[#22D3EE]/20'
+            }`}
+          >
+            <AlertTriangle className="w-4 h-4" />
+            <span>{isLeakActive ? 'Leak Active (Simulating)' : 'Simulate Leak'}</span>
+          </button>
+        </div>
       </div>
 
-      {/* 2. WORKFLOW STRIP (6 FUNCTIONAL CARDS WITH CLICK HANDLERS) matching reference */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      {/* 2. WORKFLOW STRIP (6 FUNCTIONAL CARDS WITH CLICK HANDLERS) matching reference design */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
         
         {/* Step 1: DETECT */}
         <div 
           onClick={handleDetectCardClick}
-          className={`bg-[#0B2134] border p-3 rounded-xl flex items-center justify-between group hover:border-[#22D3EE] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-sm ${
-            isDetectHighlighted ? 'border-[#22D3EE] ring-2 ring-[#22D3EE] shadow-[0_0_15px_rgba(34,211,238,0.3)]' : 'border-[#163B55]'
+          className={`bg-[#0D2032] border p-3.5 rounded-2xl flex items-center justify-between group hover:border-[#22D3EE] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-md ${
+            isDetectHighlighted ? 'border-[#22D3EE] ring-2 ring-[#22D3EE] shadow-[0_0_20px_rgba(34,211,238,0.35)]' : 'border-[#183C5A]'
           }`}
           title="Focus Live Detection Telemetry"
         >
-          <div className="flex items-center space-x-2.5 min-w-0">
-            <div className="w-7 h-7 rounded-lg bg-[#0F2940] border border-[#163B55] flex items-center justify-center text-[#22D3EE] group-hover:bg-[#22D3EE] group-hover:text-black transition-colors flex-shrink-0">
-              <Activity className="w-3.5 h-3.5" />
+          <div className="flex items-center space-x-3 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-[#040D17] border border-[#183C5A] flex items-center justify-center text-[#22D3EE] group-hover:bg-[#22D3EE] group-hover:text-[#06101E] transition-colors flex-shrink-0 font-mono text-xs font-bold">
+              01
             </div>
             <div className="min-w-0">
               <div className="text-[11px] font-display font-bold text-[#22D3EE] uppercase tracking-wider">DETECT</div>
-              <div className="text-[10px] text-[#94A3B8] truncate">AI detects flow anomalies</div>
+              <div className="text-[10px] text-[#94A3B8] truncate">Real-time flow</div>
             </div>
           </div>
-          <ArrowRight className="w-3.5 h-3.5 text-[#163B55] group-hover:text-[#22D3EE] transition-colors hidden lg:block flex-shrink-0 ml-1" />
+          <ArrowRight className="w-3.5 h-3.5 text-[#183C5A] group-hover:text-[#22D3EE] transition-colors hidden lg:block flex-shrink-0 ml-1" />
         </div>
 
         {/* Step 2: LOCATE */}
         <div 
           onClick={() => onNavigate('topology')}
-          className="bg-[#0B2134] border border-[#163B55] p-3 rounded-xl flex items-center justify-between group hover:border-[#22D3EE] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-sm"
+          className="bg-[#0D2032] border border-[#183C5A] p-3.5 rounded-2xl flex items-center justify-between group hover:border-[#22D3EE] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-md"
           title="Go to Campus Mesh Topology"
         >
-          <div className="flex items-center space-x-2.5 min-w-0">
-            <div className="w-7 h-7 rounded-lg bg-[#0F2940] border border-[#163B55] flex items-center justify-center text-[#22D3EE] group-hover:bg-[#22D3EE] group-hover:text-black transition-colors flex-shrink-0">
-              <MapPin className="w-3.5 h-3.5" />
+          <div className="flex items-center space-x-3 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-[#040D17] border border-[#183C5A] flex items-center justify-center text-[#22D3EE] group-hover:bg-[#22D3EE] group-hover:text-[#06101E] transition-colors flex-shrink-0 font-mono text-xs font-bold">
+              02
             </div>
             <div className="min-w-0">
               <div className="text-[11px] font-display font-bold text-[#22D3EE] uppercase tracking-wider">LOCATE</div>
-              <div className="text-[10px] text-[#94A3B8] truncate">Pinpoints exact zone / block</div>
+              <div className="text-[10px] text-[#94A3B8] truncate">Block B zone</div>
             </div>
           </div>
-          <ArrowRight className="w-3.5 h-3.5 text-[#163B55] group-hover:text-[#22D3EE] transition-colors hidden lg:block flex-shrink-0 ml-1" />
+          <ArrowRight className="w-3.5 h-3.5 text-[#183C5A] group-hover:text-[#22D3EE] transition-colors hidden lg:block flex-shrink-0 ml-1" />
         </div>
 
         {/* Step 3: EXPLAIN */}
         <div 
           onClick={() => onNavigate('predictive')}
-          className="bg-[#0B2134] border border-[#163B55] p-3 rounded-xl flex items-center justify-between group hover:border-[#22D3EE] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-sm"
+          className="bg-[#0D2032] border border-[#183C5A] p-3.5 rounded-2xl flex items-center justify-between group hover:border-[#22D3EE] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-md"
           title="Go to Predictive AI Diagnostics"
         >
-          <div className="flex items-center space-x-2.5 min-w-0">
-            <div className="w-7 h-7 rounded-lg bg-[#0F2940] border border-[#163B55] flex items-center justify-center text-[#22D3EE] group-hover:bg-[#22D3EE] group-hover:text-black transition-colors flex-shrink-0">
-              <FileText className="w-3.5 h-3.5" />
+          <div className="flex items-center space-x-3 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-[#040D17] border border-[#183C5A] flex items-center justify-center text-[#22D3EE] group-hover:bg-[#22D3EE] group-hover:text-[#06101E] transition-colors flex-shrink-0 font-mono text-xs font-bold">
+              03
             </div>
             <div className="min-w-0">
               <div className="text-[11px] font-display font-bold text-[#22D3EE] uppercase tracking-wider">EXPLAIN</div>
-              <div className="text-[10px] text-[#94A3B8] truncate">AI explains cause and impact</div>
+              <div className="text-[10px] text-[#94A3B8] truncate">AI explanation</div>
             </div>
           </div>
-          <ArrowRight className="w-3.5 h-3.5 text-[#163B55] group-hover:text-[#22D3EE] transition-colors hidden lg:block flex-shrink-0 ml-1" />
+          <ArrowRight className="w-3.5 h-3.5 text-[#183C5A] group-hover:text-[#22D3EE] transition-colors hidden lg:block flex-shrink-0 ml-1" />
         </div>
 
         {/* Step 4: ACTUATE */}
         <div 
           onClick={() => onNavigate('valves')}
-          className="bg-[#0B2134] border border-[#163B55] p-3 rounded-xl flex items-center justify-between group hover:border-[#22D3EE] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-sm"
+          className="bg-[#0D2032] border border-[#183C5A] p-3.5 rounded-2xl flex items-center justify-between group hover:border-[#22D3EE] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-md"
           title="Go to Remote Valve Control"
         >
-          <div className="flex items-center space-x-2.5 min-w-0">
-            <div className="w-7 h-7 rounded-lg bg-[#0F2940] border border-[#163B55] flex items-center justify-center text-[#22D3EE] group-hover:bg-[#22D3EE] group-hover:text-black transition-colors flex-shrink-0">
-              <Settings2 className="w-3.5 h-3.5" />
+          <div className="flex items-center space-x-3 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-[#040D17] border border-[#183C5A] flex items-center justify-center text-[#22D3EE] group-hover:bg-[#22D3EE] group-hover:text-[#06101E] transition-colors flex-shrink-0 font-mono text-xs font-bold">
+              04
             </div>
             <div className="min-w-0">
               <div className="text-[11px] font-display font-bold text-[#22D3EE] uppercase tracking-wider">ACTUATE</div>
-              <div className="text-[10px] text-[#94A3B8] truncate">Recommend / trigger isolation</div>
+              <div className="text-[10px] text-[#94A3B8] truncate">Valve V-02</div>
             </div>
           </div>
-          <ArrowRight className="w-3.5 h-3.5 text-[#163B55] group-hover:text-[#22D3EE] transition-colors hidden lg:block flex-shrink-0 ml-1" />
+          <ArrowRight className="w-3.5 h-3.5 text-[#183C5A] group-hover:text-[#22D3EE] transition-colors hidden lg:block flex-shrink-0 ml-1" />
         </div>
 
         {/* Step 5: VERIFY */}
         <div 
           onClick={handleVerifyClick}
-          className="bg-[#0B2134] border border-[#163B55] p-3 rounded-xl flex items-center justify-between group hover:border-[#22D3EE] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-sm"
+          className="bg-[#0D2032] border border-[#183C5A] p-3.5 rounded-2xl flex items-center justify-between group hover:border-[#22D3EE] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-md"
           title="Verify Post-Isolation System Recovery"
         >
-          <div className="flex items-center space-x-2.5 min-w-0">
-            <div className="w-7 h-7 rounded-lg bg-[#0F2940] border border-[#163B55] flex items-center justify-center text-[#22D3EE] group-hover:bg-[#22D3EE] group-hover:text-black transition-colors flex-shrink-0">
-              <ShieldCheck className="w-3.5 h-3.5" />
+          <div className="flex items-center space-x-3 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-[#040D17] border border-[#183C5A] flex items-center justify-center text-[#22C55E] group-hover:bg-[#22C55E] group-hover:text-[#06101E] transition-colors flex-shrink-0 font-mono text-xs font-bold">
+              05
             </div>
             <div className="min-w-0">
-              <div className="text-[11px] font-display font-bold text-[#22D3EE] uppercase tracking-wider">VERIFY</div>
-              <div className="text-[10px] text-[#94A3B8] truncate">Confirms leak stopped & stable</div>
+              <div className="text-[11px] font-display font-bold text-[#22C55E] uppercase tracking-wider">VERIFY</div>
+              <div className="text-[10px] text-[#94A3B8] truncate">0 L/min audit</div>
             </div>
           </div>
-          <ArrowRight className="w-3.5 h-3.5 text-[#163B55] group-hover:text-[#22D3EE] transition-colors hidden lg:block flex-shrink-0 ml-1" />
+          <ArrowRight className="w-3.5 h-3.5 text-[#183C5A] group-hover:text-[#22D3EE] transition-colors hidden lg:block flex-shrink-0 ml-1" />
         </div>
 
         {/* Step 6: QUANTIFY */}
         <div 
           onClick={() => onNavigate('esg')}
-          className="bg-[#0B2134] border border-[#163B55] p-3 rounded-xl flex items-center justify-between group hover:border-[#22D3EE] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-sm"
+          className="bg-[#0D2032] border border-[#183C5A] p-3.5 rounded-2xl flex items-center justify-between group hover:border-[#22D3EE] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shadow-md"
           title="Go to ESG Carbon & Financial Audit"
         >
-          <div className="flex items-center space-x-2.5 min-w-0">
-            <div className="w-7 h-7 rounded-lg bg-[#0F2940] border border-[#163B55] flex items-center justify-center text-[#22D3EE] group-hover:bg-[#22D3EE] group-hover:text-black transition-colors flex-shrink-0">
-              <BarChart3 className="w-3.5 h-3.5" />
+          <div className="flex items-center space-x-3 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-[#040D17] border border-[#183C5A] flex items-center justify-center text-[#22C55E] group-hover:bg-[#22C55E] group-hover:text-[#06101E] transition-colors flex-shrink-0 font-mono text-xs font-bold">
+              06
             </div>
             <div className="min-w-0">
-              <div className="text-[11px] font-display font-bold text-[#22D3EE] uppercase tracking-wider">QUANTIFY</div>
-              <div className="text-[10px] text-[#94A3B8] truncate">Measures water, cost & ESG</div>
+              <div className="text-[11px] font-display font-bold text-[#22C55E] uppercase tracking-wider">QUANTIFY</div>
+              <div className="text-[10px] text-[#94A3B8] truncate">18,360 L saved</div>
             </div>
           </div>
         </div>
 
       </div>
 
-      {/* 3. THREE-COLUMN COMMAND CENTER GRID matching reference */}
+      {/* 3. THREE-COLUMN COMMAND CENTER GRID matching reference layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         
-        {/* LEFT COLUMN: INCIDENT & KPI PANEL (3 cols) */}
-        <div className="lg:col-span-3 space-y-3.5">
+        {/* LEFT COLUMN: HERO INFORMATION CARD & METRIC BREAKDOWN (4 cols) matching reference "Overall Information" card */}
+        <div className="lg:col-span-4 space-y-4">
           
-          {/* LIVE INCIDENT CARD (Only during Leak) */}
-          {isLeakActive && (
-            <div className="bg-[#0B2134] border border-[#EF4444] p-4 rounded-2xl space-y-2 shadow-lg shadow-[#EF4444]/10 animate-pulse">
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-[#EF4444] font-bold flex items-center space-x-1.5 uppercase">
-                  <span className="w-2 h-2 rounded-full bg-[#EF4444] animate-ping" />
-                  <span>● LIVE INCIDENT</span>
-                </span>
-                <span className="text-[#94A3B8] text-[10px]">2 min ago</span>
-              </div>
+          {/* HERO FOCAL CARD (Reference Design "Overall Information" dark card) */}
+          <div className="hero-dark-card p-6 rounded-3xl space-y-5">
+            
+            <div className="flex items-center justify-between border-b border-[#183C5A]/60 pb-3">
               <div>
-                <h3 className="font-display font-bold text-base text-[#F8FAFC]">Block B – Floor 2</h3>
-                <p className="text-xs text-[#EF4444] font-medium mt-0.5">Differential flow anomaly detected</p>
+                <span className="text-[10px] font-mono text-[#22D3EE] font-bold uppercase tracking-wider">Telemetry Overview</span>
+                <h2 className="font-display text-lg font-extrabold text-[#F8FAFC]">Differential Flow Balance</h2>
               </div>
-            </div>
-          )}
-
-          {/* MAIN INFLOW CARD */}
-          <div className="bg-[#0B2134] border border-[#163B55] p-3.5 rounded-2xl flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 rounded-xl bg-[#0F2940] border border-[#163B55] flex items-center justify-center text-[#22D3EE]">
-                <Droplets className="w-4 h-4" />
-              </div>
-              <div>
-                <div className="font-display font-extrabold text-xl text-[#F8FAFC]">
-                  {rootNode.flowRate} <span className="text-xs font-normal text-[#94A3B8]">L/min</span>
-                </div>
-                <div className="text-[11px] text-[#94A3B8]">Main Inflow</div>
-              </div>
-            </div>
-            {isLeakActive ? (
-              <span className="px-2 py-0.5 text-[10px] font-bold font-mono bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/30 rounded-full">
-                ↑ +30% vs baseline
-              </span>
-            ) : (
-              <span className="px-2 py-0.5 text-[10px] font-bold font-mono bg-[#22C55E]/20 text-[#22C55E] border border-[#22C55E]/30 rounded-full">
-                Normal
-              </span>
-            )}
-          </div>
-
-          {/* ACCOUNTED FLOW CARD */}
-          <div className="bg-[#0B2134] border border-[#163B55] p-3.5 rounded-2xl flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 rounded-xl bg-[#0F2940] border border-[#163B55] flex items-center justify-center text-[#22D3EE]">
+              <div className="w-8 h-8 rounded-xl bg-[#0D2032] border border-[#183C5A] flex items-center justify-center text-[#22D3EE]">
                 <Activity className="w-4 h-4" />
               </div>
-              <div>
-                <div className="font-display font-extrabold text-xl text-[#F8FAFC]">
-                  {totalAccountedFlow} <span className="text-xs font-normal text-[#94A3B8]">L/min</span>
-                </div>
-                <div className="text-[11px] text-[#94A3B8]">Accounted Flow</div>
-              </div>
             </div>
-            <span className="px-2 py-0.5 text-[10px] font-bold font-mono bg-[#22C55E]/20 text-[#22C55E] border border-[#22C55E]/30 rounded-full">
-              Normal
-            </span>
+
+            {/* Giant Hero Metric Numbers */}
+            <div className="space-y-1">
+              <div className="text-xs font-mono text-[#94A3B8] uppercase">Current Main Flow Status</div>
+              <div className="flex items-baseline space-x-3">
+                <span className={`font-display text-4xl lg:text-5xl font-extrabold tracking-tight ${
+                  isLeakActive ? 'text-[#EF4444]' : 'text-[#F8FAFC]'
+                }`}>
+                  {isLeakActive ? `+${unaccountedFlow}` : `${rootNode.flowRate}`}
+                </span>
+                <span className="text-sm font-mono text-[#94A3B8]">L/min</span>
+                <span className={`ml-auto px-2.5 py-1 text-xs font-mono font-bold rounded-full border ${
+                  isLeakActive
+                    ? 'bg-[#EF4444]/20 text-[#EF4444] border-[#EF4444]/40 animate-pulse'
+                    : 'bg-[#22C55E]/20 text-[#22C55E] border-[#22C55E]/40'
+                }`}>
+                  {isLeakActive ? 'LEAK BREACH' : 'BASELINE NORMAL'}
+                </span>
+              </div>
+              <p className="text-xs text-[#94A3B8]">
+                {isLeakActive 
+                  ? 'Differential breach detected above 64.5 L/min threshold in Block B.' 
+                  : 'Main supply matches accounted building consumption (Baseline 43 L/min).'
+                }
+              </p>
+            </div>
+
+            {/* 3 NESTED SUB-WIDGET CARDS inside Hero Focal Card (matching reference inner pills) */}
+            <div className="grid grid-cols-3 gap-2.5 pt-2">
+              
+              {/* Mini Card 1: Inflow */}
+              <div className="bg-[#0B1A28] border border-[#183C5A] p-3 rounded-2xl text-center space-y-1">
+                <div className="w-6 h-6 mx-auto rounded-lg bg-[#15334E] flex items-center justify-center text-[#22D3EE]">
+                  <Droplets className="w-3.5 h-3.5" />
+                </div>
+                <div className="font-display font-extrabold text-sm text-[#F8FAFC]">{rootNode.flowRate}</div>
+                <div className="text-[10px] text-[#94A3B8] truncate">Main Inflow</div>
+              </div>
+
+              {/* Mini Card 2: Accounted */}
+              <div className="bg-[#0B1A28] border border-[#183C5A] p-3 rounded-2xl text-center space-y-1">
+                <div className="w-6 h-6 mx-auto rounded-lg bg-[#15334E] flex items-center justify-center text-[#22C55E]">
+                  <Activity className="w-3.5 h-3.5" />
+                </div>
+                <div className="font-display font-extrabold text-sm text-[#22C55E]">{totalAccountedFlow}</div>
+                <div className="text-[10px] text-[#94A3B8] truncate">Accounted</div>
+              </div>
+
+              {/* Mini Card 3: Unaccounted */}
+              <div className="bg-[#0B1A28] border border-[#183C5A] p-3 rounded-2xl text-center space-y-1">
+                <div className="w-6 h-6 mx-auto rounded-lg bg-[#15334E] flex items-center justify-center text-[#EF4444]">
+                  <AlertTriangle className="w-3.5 h-3.5" />
+                </div>
+                <div className={`font-display font-extrabold text-sm ${isLeakActive ? 'text-[#EF4444]' : 'text-[#22C55E]'}`}>
+                  {isLeakActive ? `+${unaccountedFlow}` : '0'}
+                </div>
+                <div className="text-[10px] text-[#94A3B8] truncate">Unaccounted</div>
+              </div>
+
+            </div>
+
           </div>
 
-          {/* UNACCOUNTED WATER CARD */}
-          <div className={`p-3.5 rounded-2xl flex items-center justify-between border ${
-            isLeakActive ? 'bg-[#0B2134] border-[#EF4444]/80 shadow-md shadow-[#EF4444]/10' : 'bg-[#0B2134] border-[#163B55]'
-          }`}>
-            <div className="flex items-center space-x-3">
-              <div className={`w-9 h-9 rounded-xl border flex items-center justify-center ${
-                isLeakActive ? 'bg-[#EF4444]/10 border-[#EF4444]/40 text-[#EF4444]' : 'bg-[#0F2940] border-[#163B55] text-[#22C55E]'
-              }`}>
-                <AlertTriangle className="w-4 h-4" />
+          {/* SECONDARY IMPACT CARDS (2 Column Grid) */}
+          <div className="grid grid-cols-2 gap-3.5">
+            <div 
+              onClick={() => onNavigate('esg')}
+              className="bg-[#0D2032] border border-[#183C5A] p-4 rounded-3xl space-y-2 hover:border-[#22C55E]/60 transition-all cursor-pointer shadow-md group"
+            >
+              <div className="flex items-center justify-between">
+                <Leaf className="w-5 h-5 text-[#22C55E]" />
+                <span className="text-[10px] font-mono text-[#64748B]">ESG Impact</span>
               </div>
-              <div>
-                <div className={`font-display font-extrabold text-xl ${isLeakActive ? 'text-[#EF4444]' : 'text-[#22C55E]'}`}>
-                  {isLeakActive ? `+${unaccountedFlow} L/min` : '0 L/min'}
-                </div>
-                <div className="text-[11px] text-[#94A3B8]">Unaccounted Water</div>
+              <div className="font-display font-extrabold text-xl text-[#22C55E]">18,360 L</div>
+              <div className="text-[11px] text-[#94A3B8] leading-tight">
+                Water Loss Prevented <span className="text-[#64748B] block">(6h projected containment)</span>
               </div>
             </div>
-            <span className={`px-2 py-0.5 text-[10px] font-bold font-mono rounded-full ${
-              isLeakActive ? 'bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/30' : 'bg-[#22C55E]/20 text-[#22C55E] border border-[#22C55E]/30'
-            }`}>
-              {isLeakActive ? 'High Anomaly' : '0 L/min'}
-            </span>
-          </div>
 
-          {/* AFFECTED ZONE CARD */}
-          <div className="bg-[#0B2134] border border-[#163B55] p-3.5 rounded-2xl flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 rounded-xl bg-[#0F2940] border border-[#163B55] flex items-center justify-center text-[#22D3EE]">
-                <MapPin className="w-4 h-4" />
+            <div 
+              onClick={() => onNavigate('esg')}
+              className="bg-[#0D2032] border border-[#183C5A] p-4 rounded-3xl space-y-2 hover:border-[#22D3EE]/60 transition-all cursor-pointer shadow-md group"
+            >
+              <div className="flex items-center justify-between">
+                <Coins className="w-5 h-5 text-[#22D3EE]" />
+                <span className="text-[10px] font-mono text-[#64748B]">Savings</span>
               </div>
-              <div>
-                <div className="font-display font-extrabold text-lg text-[#F8FAFC]">
-                  {isLeakActive ? 'Block B' : 'All Zones'}
-                </div>
-                <div className="text-[11px] text-[#94A3B8]">
-                  {isLeakActive ? 'Affected Zone' : 'All Zones Normal'}
-                </div>
+              <div className="font-display font-extrabold text-xl text-[#22D3EE]">₹826.20</div>
+              <div className="text-[11px] text-[#94A3B8] leading-tight">
+                Financial Savings <span className="text-[#64748B] block">(₹45/kL municipal rate)</span>
               </div>
             </div>
-            <span className="text-xs text-[#94A3B8] font-mono font-medium">
-              {isLeakActive ? 'Floor 2' : 'Monitored'}
-            </span>
           </div>
 
-          {/* VALVE RECOMMENDATION CARD */}
-          <div className="bg-[#0B2134] border border-[#163B55] p-3.5 rounded-2xl flex items-center justify-between group hover:border-[#22D3EE]/60 transition-all">
-            <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 rounded-xl bg-[#0F2940] border border-[#163B55] flex items-center justify-center text-[#22D3EE]">
-                <Sliders className="w-4 h-4" />
+          {/* VALVE & ZONE STATUS CARD */}
+          <div className="bg-[#0D2032] border border-[#183C5A] p-4 rounded-3xl flex items-center justify-between shadow-md">
+            <div className="flex items-center space-x-3.5">
+              <div className="w-10 h-10 rounded-2xl bg-[#040D17] border border-[#183C5A] flex items-center justify-center text-[#22D3EE]">
+                <Sliders className="w-5 h-5" />
               </div>
               <div>
-                <div className="font-display font-extrabold text-lg text-[#F8FAFC]">V-02</div>
-                <div className="text-[11px] text-[#94A3B8]">
-                  {isTargetValveClosed ? 'Zone Isolated' : 'Isolation Recommended'}
+                <div className="font-display font-extrabold text-base text-[#F8FAFC]">Solenoid Valve V-02</div>
+                <div className="text-xs text-[#94A3B8]">
+                  {isTargetValveClosed ? 'Zone Isolated · Closed' : 'Isolation Recommended · Block B'}
                 </div>
               </div>
             </div>
             <button 
               onClick={() => onNavigate('valves')}
-              className="p-2 rounded-lg bg-[#0F2940] hover:bg-[#22D3EE] text-[#22D3EE] hover:text-black border border-[#163B55] transition-colors"
-              title="Go to Valve Control Center"
+              className="p-2.5 rounded-xl bg-[#040D17] hover:bg-[#22D3EE] text-[#22D3EE] hover:text-[#06101E] border border-[#183C5A] transition-colors"
+              title="Go to Valve Control"
             >
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
-          {/* BOTTOM IMPACT CARDS (2 cols) */}
-          <div className="grid grid-cols-2 gap-3 pt-1">
-            <div 
-              onClick={() => onNavigate('esg')}
-              className="bg-[#0B2134] border border-[#163B55] p-3 rounded-2xl space-y-1 hover:border-[#22D3EE]/50 transition-all cursor-pointer"
-            >
-              <Leaf className="w-4 h-4 text-[#22C55E]" />
-              <div className="font-display font-extrabold text-base text-[#22C55E]">18,360 L</div>
-              <div className="text-[10px] text-[#94A3B8] leading-tight">
-                Water Loss Prevented <span className="text-[#64748B] block">(Projected - 6h)</span>
-              </div>
-            </div>
-            <div 
-              onClick={() => onNavigate('esg')}
-              className="bg-[#0B2134] border border-[#163B55] p-3 rounded-2xl space-y-1 hover:border-[#22D3EE]/50 transition-all cursor-pointer"
-            >
-              <Coins className="w-4 h-4 text-[#22D3EE]" />
-              <div className="font-display font-extrabold text-base text-[#22D3EE]">₹826.20</div>
-              <div className="text-[10px] text-[#94A3B8] leading-tight">
-                Estimated Savings <span className="text-[#64748B] block">(₹45/kL municipal rate)</span>
-              </div>
-            </div>
-          </div>
-
         </div>
 
-        {/* CENTER COLUMN: CAMPUS NETWORK MAP & AI RECOMMENDATION (5 cols) */}
-        <div className="lg:col-span-5 space-y-3.5">
+        {/* CENTER COLUMN: CAMPUS NETWORK MAP & AI RECOMMENDATION (4 cols) */}
+        <div className="lg:col-span-4 space-y-4">
           
           {/* CAMPUS NETWORK MAP CARD matching reference */}
-          <div className="bg-[#0B2134] border border-[#163B55] p-4 rounded-2xl space-y-4">
+          <div className="bg-[#0D2032] border border-[#183C5A] p-5 rounded-3xl space-y-4 shadow-xl">
             
             {/* Header with Functional Metric Dropdown */}
-            <div className="flex items-center justify-between border-b border-[#163B55]/60 pb-3">
+            <div className="flex items-center justify-between border-b border-[#183C5A]/60 pb-3">
               <div className="flex items-center space-x-2">
                 <MapPin className="w-4 h-4 text-[#22D3EE]" />
                 <div>
                   <h3 className="font-display font-bold text-sm text-[#F8FAFC]">Campus Network Map</h3>
-                  <p className="text-[10px] text-[#94A3B8]">Live flow status across all blocks</p>
+                  <p className="text-[10px] text-[#94A3B8]">Sub-meter topology status</p>
                 </div>
               </div>
               
@@ -551,7 +550,7 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
               <div className="relative" ref={mapMetricRef}>
                 <button 
                   onClick={() => setMapMetricDropdownOpen(!mapMetricDropdownOpen)}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#0F2940] hover:bg-[#163B55] border border-[#163B55] text-xs text-[#F8FAFC] font-mono transition-colors"
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#040D17] hover:bg-[#15334E] border border-[#183C5A] text-xs text-[#F8FAFC] font-mono transition-colors"
                 >
                   <span>
                     {selectedMapMetric === 'flow' ? 'Flow Rate (L/min)' : selectedMapMetric === 'pressure' ? 'Pressure (bar)' : 'Tank Level (%)'}
@@ -560,24 +559,24 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
                 </button>
 
                 {mapMetricDropdownOpen && (
-                  <div className="absolute right-0 mt-1 w-44 bg-[#0B2134] border border-[#163B55] rounded-xl shadow-xl z-30 py-1 text-xs font-mono">
+                  <div className="absolute right-0 mt-1 w-44 bg-[#040D17] border border-[#183C5A] rounded-2xl shadow-2xl z-30 py-1 text-xs font-mono">
                     <button
                       onClick={() => { setSelectedMapMetric('flow'); setMapMetricDropdownOpen(false); }}
-                      className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-[#0F2940] transition-colors ${selectedMapMetric === 'flow' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
+                      className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-[#15334E] transition-colors ${selectedMapMetric === 'flow' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
                     >
                       <span>Flow Rate (L/min)</span>
                       {selectedMapMetric === 'flow' && <Check className="w-3.5 h-3.5 text-[#22D3EE]" />}
                     </button>
                     <button
                       onClick={() => { setSelectedMapMetric('pressure'); setMapMetricDropdownOpen(false); }}
-                      className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-[#0F2940] transition-colors ${selectedMapMetric === 'pressure' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
+                      className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-[#15334E] transition-colors ${selectedMapMetric === 'pressure' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
                     >
                       <span>Pressure (bar)</span>
                       {selectedMapMetric === 'pressure' && <Check className="w-3.5 h-3.5 text-[#22D3EE]" />}
                     </button>
                     <button
                       onClick={() => { setSelectedMapMetric('tank'); setMapMetricDropdownOpen(false); }}
-                      className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-[#0F2940] transition-colors ${selectedMapMetric === 'tank' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
+                      className={`w-full text-left px-3 py-2 flex items-center justify-between hover:bg-[#15334E] transition-colors ${selectedMapMetric === 'tank' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
                     >
                       <span>Tank Level (%)</span>
                       {selectedMapMetric === 'tank' && <Check className="w-3.5 h-3.5 text-[#22D3EE]" />}
@@ -588,14 +587,14 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
             </div>
 
             {/* Spatial Network Topology Graphic */}
-            <div className="bg-[#081A2B] border border-[#163B55] rounded-xl p-5 relative overflow-hidden space-y-6">
+            <div className="bg-[#040D17] border border-[#183C5A] rounded-2xl p-5 relative overflow-hidden space-y-6">
               
               {/* Subtle background grid pattern */}
-              <div className="absolute inset-0 bg-[radial-gradient(#163B55_1px,transparent_1px)] [background-size:16px_16px] opacity-30 pointer-events-none" />
+              <div className="absolute inset-0 bg-[radial-gradient(#183C5A_1px,transparent_1px)] [background-size:16px_16px] opacity-30 pointer-events-none" />
 
               {/* ROOT SUPPLY NODE */}
               <div className="flex justify-center relative z-10">
-                <div className="bg-[#0F2940] border border-[#22D3EE]/50 px-4 py-2 rounded-xl flex items-center space-x-2.5 shadow-lg shadow-[#22D3EE]/10">
+                <div className="bg-[#0D2032] border border-[#22D3EE]/50 px-4 py-2 rounded-xl flex items-center space-x-2.5 shadow-lg shadow-[#22D3EE]/10">
                   <div className="w-6 h-6 rounded-full bg-[#22D3EE]/20 flex items-center justify-center text-[#22D3EE]">
                     <Droplets className="w-3.5 h-3.5" />
                   </div>
@@ -627,8 +626,8 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
               <div className="grid grid-cols-4 gap-2 relative z-10 font-mono text-center">
                 
                 {/* Block A */}
-                <div className="bg-[#0B2134] border border-[#163B55] p-2.5 rounded-xl space-y-1">
-                  <div className="w-5 h-5 mx-auto rounded-full bg-[#0F2940] flex items-center justify-center text-[#22D3EE]">
+                <div className="bg-[#0D2032] border border-[#183C5A] p-2.5 rounded-xl space-y-1">
+                  <div className="w-5 h-5 mx-auto rounded-full bg-[#15334E] flex items-center justify-center text-[#22D3EE]">
                     <Droplets className="w-3 h-3" />
                   </div>
                   <div className="text-[11px] font-bold text-[#F8FAFC]">Block A</div>
@@ -638,13 +637,13 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
                 {/* Block B (Target Anomaly Node) */}
                 <div className={`p-2.5 rounded-xl space-y-1 border transition-all ${
                   isLeakActive
-                    ? 'bg-[#0B2134] border-[#EF4444] shadow-lg shadow-[#EF4444]/20 animate-pulse'
+                    ? 'bg-[#0D2032] border-[#EF4444] shadow-lg shadow-[#EF4444]/20 animate-pulse'
                     : isTargetValveClosed
-                    ? 'bg-[#0B2134] border-[#22D3EE]/60'
-                    : 'bg-[#0B2134] border-[#163B55]'
+                    ? 'bg-[#0D2032] border-[#22D3EE]/60'
+                    : 'bg-[#0D2032] border-[#183C5A]'
                 }`}>
                   <div className={`w-5 h-5 mx-auto rounded-full flex items-center justify-center ${
-                    isLeakActive ? 'bg-[#EF4444] text-white' : 'bg-[#0F2940] text-[#22D3EE]'
+                    isLeakActive ? 'bg-[#EF4444] text-white' : 'bg-[#15334E] text-[#22D3EE]'
                   }`}>
                     {isLeakActive ? <AlertTriangle className="w-3 h-3" /> : <Droplets className="w-3 h-3" />}
                   </div>
@@ -655,8 +654,8 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
                 </div>
 
                 {/* Block C */}
-                <div className="bg-[#0B2134] border border-[#163B55] p-2.5 rounded-xl space-y-1">
-                  <div className="w-5 h-5 mx-auto rounded-full bg-[#0F2940] flex items-center justify-center text-[#22D3EE]">
+                <div className="bg-[#0D2032] border border-[#183C5A] p-2.5 rounded-xl space-y-1">
+                  <div className="w-5 h-5 mx-auto rounded-full bg-[#15334E] flex items-center justify-center text-[#22D3EE]">
                     <Droplets className="w-3 h-3" />
                   </div>
                   <div className="text-[11px] font-bold text-[#F8FAFC]">Block C</div>
@@ -664,8 +663,8 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
                 </div>
 
                 {/* Block D / Tank */}
-                <div className="bg-[#0B2134] border border-[#163B55] p-2.5 rounded-xl space-y-1">
-                  <div className="w-5 h-5 mx-auto rounded-full bg-[#0F2940] flex items-center justify-center text-[#22D3EE]">
+                <div className="bg-[#0D2032] border border-[#183C5A] p-2.5 rounded-xl space-y-1">
+                  <div className="w-5 h-5 mx-auto rounded-full bg-[#15334E] flex items-center justify-center text-[#22D3EE]">
                     <Droplets className="w-3 h-3" />
                   </div>
                   <div className="text-[11px] font-bold text-[#F8FAFC]">Block D</div>
@@ -675,22 +674,18 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
               </div>
 
               {/* Legend Footer */}
-              <div className="flex items-center justify-center space-x-4 text-[10px] font-mono text-[#94A3B8] pt-2 border-t border-[#163B55]/60 relative z-10">
+              <div className="flex items-center justify-center space-x-4 text-[10px] font-mono text-[#94A3B8] pt-2 border-t border-[#183C5A]/60 relative z-10">
                 <div className="flex items-center space-x-1">
                   <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
                   <span>Normal Flow</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <span className="w-2 h-2 rounded-full bg-[#EF4444]" />
-                  <span>Anomaly Detected</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <span className="w-2 h-2 rounded-full bg-[#64748B]" />
-                  <span>Offline</span>
+                  <span>Anomaly</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <span className="w-3 h-0.5 bg-[#22D3EE]" />
-                  <span>Water Network</span>
+                  <span>Sub-Meter Mesh</span>
                 </div>
               </div>
 
@@ -699,9 +694,9 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
           </div>
 
           {/* AI RECOMMENDATION CARD matching reference */}
-          <div className="bg-[#0F2940] border border-[#22D3EE]/40 p-4 rounded-2xl flex items-center justify-between space-x-4">
+          <div className="bg-[#0B1A28] border border-[#22D3EE]/40 p-4 rounded-3xl flex items-center justify-between space-x-4 shadow-xl">
             <div className="flex items-center space-x-3 min-w-0">
-              <div className="w-9 h-9 rounded-xl bg-[#22D3EE]/10 border border-[#22D3EE]/30 flex items-center justify-center text-[#22D3EE] flex-shrink-0">
+              <div className="w-9 h-9 rounded-2xl bg-[#22D3EE]/10 border border-[#22D3EE]/30 flex items-center justify-center text-[#22D3EE] flex-shrink-0">
                 <Lightbulb className="w-5 h-5" />
               </div>
               <div className="min-w-0">
@@ -719,9 +714,9 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
 
             <button
               onClick={() => onNavigate('valves')}
-              className="px-3.5 py-2 bg-[#22D3EE] hover:bg-[#06B6D4] text-black font-display font-bold text-xs rounded-xl transition-all flex items-center space-x-1.5 flex-shrink-0 shadow-md shadow-[#22D3EE]/20"
+              className="px-3.5 py-2 bg-[#22D3EE] hover:bg-[#06B6D4] text-[#06101E] font-display font-bold text-xs rounded-xl transition-all flex items-center space-x-1.5 flex-shrink-0 shadow-md shadow-[#22D3EE]/20"
             >
-              <span>Go to Valve Control</span>
+              <span>Actuate</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -729,11 +724,11 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
         </div>
 
         {/* RIGHT COLUMN: ALERTS, TREND CHART & METRICS (4 cols) */}
-        <div className="lg:col-span-4 space-y-3.5">
+        <div className="lg:col-span-4 space-y-4">
           
           {/* ACTIVE ALERTS CARD matching reference */}
-          <div className="bg-[#0B2134] border border-[#163B55] p-4 rounded-2xl space-y-3">
-            <div className="flex items-center justify-between border-b border-[#163B55]/60 pb-2">
+          <div className="bg-[#0D2032] border border-[#183C5A] p-4 rounded-3xl space-y-3 shadow-xl">
+            <div className="flex items-center justify-between border-b border-[#183C5A]/60 pb-2">
               <h3 className="font-display font-bold text-sm text-[#F8FAFC]">Active Alerts</h3>
               <button onClick={() => onNavigate('alerts')} className="text-xs text-[#38BDF8] hover:underline">
                 View All
@@ -743,10 +738,10 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
             {isLeakActive ? (
               <div 
                 onClick={() => onNavigate('alerts')}
-                className="bg-[#081A2B] border border-[#EF4444]/60 p-3 rounded-xl space-y-2 hover:border-[#EF4444] cursor-pointer transition-colors"
+                className="bg-[#040D17] border border-[#EF4444]/60 p-3.5 rounded-2xl space-y-2 hover:border-[#EF4444] cursor-pointer transition-colors"
               >
                 <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 rounded-lg bg-[#EF4444]/20 border border-[#EF4444]/40 flex items-center justify-center text-[#EF4444] flex-shrink-0">
+                  <div className="w-8 h-8 rounded-xl bg-[#EF4444]/20 border border-[#EF4444]/40 flex items-center justify-center text-[#EF4444] flex-shrink-0">
                     <AlertTriangle className="w-4 h-4" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -758,7 +753,7 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-[#163B55]/50 text-[11px] font-mono">
+                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-[#183C5A]/50 text-[11px] font-mono">
                   <div>
                     <span className="text-[#94A3B8]">Severity</span>
                     <div className="font-bold text-[#EF4444]">High</div>
@@ -770,7 +765,7 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
                 </div>
               </div>
             ) : (
-              <div className="p-3 bg-[#081A2B] border border-[#163B55] rounded-xl text-center space-y-1">
+              <div className="p-3.5 bg-[#040D17] border border-[#183C5A] rounded-2xl text-center space-y-1">
                 <ShieldCheck className="w-6 h-6 text-[#22C55E] mx-auto" />
                 <div className="text-xs font-bold text-[#22C55E]">No Active Critical Alerts</div>
                 <div className="text-[10px] text-[#94A3B8]">Network Operating Normally</div>
@@ -782,16 +777,16 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
           <div 
             id="live-telemetry"
             ref={telemetryRef}
-            className={`bg-[#0B2134] border p-4 rounded-2xl space-y-3 transition-all duration-500 ${
+            className={`bg-[#0D2032] border p-5 rounded-3xl space-y-3.5 transition-all duration-500 shadow-xl ${
               isDetectHighlighted 
                 ? 'border-[#22D3EE] ring-2 ring-[#22D3EE] shadow-[0_0_30px_rgba(34,211,238,0.35)]' 
-                : 'border-[#163B55]'
+                : 'border-[#183C5A]'
             }`}
           >
             
             {/* Detection Active Status Banner */}
             {isDetectHighlighted && (
-              <div className="bg-[#0F2940] border border-[#22D3EE]/60 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 animate-fade-in text-xs font-mono">
+              <div className="bg-[#040D17] border border-[#22D3EE]/60 rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 animate-fade-in text-xs font-mono">
                 <div className="flex items-center space-x-2.5">
                   <div className="relative flex items-center justify-center">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#22D3EE] animate-ping absolute" />
@@ -806,30 +801,11 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
                     </span>
                   </div>
                 </div>
-                {isLeakActive ? (
-                  <div className="flex flex-wrap items-center gap-2 text-[11px]">
-                    <span className="text-[#EF4444] font-bold bg-[#EF4444]/10 px-2 py-0.5 rounded border border-[#EF4444]/30">
-                      Abnormal Flow: {rootNode.flowRate} L/min (+{differentialLeakFlow || 51} L/min)
-                    </span>
-                    <span className="text-[#94A3B8]">|</span>
-                    <span className="text-[#F8FAFC]">
-                      1.5× Limit: <strong className="text-[#EF4444]">64.5 L/min</strong>
-                    </span>
-                    <span className="text-[#94A3B8]">|</span>
-                    <span className="text-[#22D3EE] font-semibold">
-                      Zone: Block B Line
-                    </span>
-                  </div>
-                ) : (
-                  <span className="text-[#22C55E] text-[11px] font-semibold bg-[#22C55E]/10 px-2.5 py-0.5 rounded border border-[#22C55E]/30">
-                    ● Baseline: 43 L/min (Normal Operations)
-                  </span>
-                )}
               </div>
             )}
 
             {/* Header with Functional Timeframe Dropdown */}
-            <div className="flex items-center justify-between border-b border-[#163B55]/60 pb-2">
+            <div className="flex items-center justify-between border-b border-[#183C5A]/60 pb-2">
               <div className="flex items-center space-x-3">
                 <h3 className="font-display font-bold text-sm text-[#F8FAFC]">Flow Trend (L/min)</h3>
               </div>
@@ -838,7 +814,7 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
               <div className="relative" ref={timeframeRef}>
                 <button 
                   onClick={() => setTimeframeDropdownOpen(!timeframeDropdownOpen)}
-                  className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-[#0F2940] hover:bg-[#163B55] border border-[#163B55] text-[11px] text-[#F8FAFC] font-mono transition-colors"
+                  className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#040D17] hover:bg-[#15334E] border border-[#183C5A] text-[11px] text-[#F8FAFC] font-mono transition-colors"
                 >
                   <span>
                     {selectedTimeframe === '1H' ? 'Last 1 Hour' : selectedTimeframe === '6H' ? 'Last 6 Hours' : selectedTimeframe === '24H' ? 'Last 24 Hours' : 'Last 7 Days'}
@@ -847,31 +823,31 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
                 </button>
 
                 {timeframeDropdownOpen && (
-                  <div className="absolute right-0 mt-1 w-36 bg-[#0B2134] border border-[#163B55] rounded-xl shadow-xl z-30 py-1 text-xs font-mono">
+                  <div className="absolute right-0 mt-1 w-36 bg-[#040D17] border border-[#183C5A] rounded-2xl shadow-2xl z-30 py-1 text-xs font-mono">
                     <button
                       onClick={() => { setSelectedTimeframe('1H'); setTimeframeDropdownOpen(false); }}
-                      className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0F2940] transition-colors ${selectedTimeframe === '1H' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
+                      className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#15334E] transition-colors ${selectedTimeframe === '1H' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
                     >
                       <span>1 Hour</span>
                       {selectedTimeframe === '1H' && <Check className="w-3 h-3 text-[#22D3EE]" />}
                     </button>
                     <button
                       onClick={() => { setSelectedTimeframe('6H'); setTimeframeDropdownOpen(false); }}
-                      className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0F2940] transition-colors ${selectedTimeframe === '6H' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
+                      className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#15334E] transition-colors ${selectedTimeframe === '6H' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
                     >
                       <span>6 Hours</span>
                       {selectedTimeframe === '6H' && <Check className="w-3 h-3 text-[#22D3EE]" />}
                     </button>
                     <button
                       onClick={() => { setSelectedTimeframe('24H'); setTimeframeDropdownOpen(false); }}
-                      className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0F2940] transition-colors ${selectedTimeframe === '24H' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
+                      className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#15334E] transition-colors ${selectedTimeframe === '24H' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
                     >
                       <span>24 Hours</span>
                       {selectedTimeframe === '24H' && <Check className="w-3 h-3 text-[#22D3EE]" />}
                     </button>
                     <button
                       onClick={() => { setSelectedTimeframe('7D'); setTimeframeDropdownOpen(false); }}
-                      className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0F2940] transition-colors ${selectedTimeframe === '7D' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
+                      className={`w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#15334E] transition-colors ${selectedTimeframe === '7D' ? 'text-[#22D3EE] font-bold' : 'text-[#94A3B8]'}`}
                     >
                       <span>7 Days</span>
                       {selectedTimeframe === '7D' && <Check className="w-3 h-3 text-[#22D3EE]" />}
@@ -883,25 +859,25 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
 
             {/* STATUS ROW ABOVE CHART (OUTSIDE PLOTTING AREA) */}
             <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
-              <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-md bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#22C55E]">
+              <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-xl bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#22C55E]">
                 <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
                 <span className="font-semibold">Baseline 43 L/min</span>
               </div>
 
-              <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-md bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444]">
+              <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-xl bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444]">
                 <span className="w-3 h-0 border-t-2 border-dashed border-[#EF4444]" />
                 <span className="font-semibold">Threshold 64.5 L/min</span>
               </div>
 
               {isLeakActive ? (
-                <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-md bg-[#EF4444]/20 border border-[#EF4444]/50 text-[#EF4444] animate-pulse">
+                <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-xl bg-[#EF4444]/20 border border-[#EF4444]/50 text-[#EF4444] animate-pulse">
                   <span className="w-2 h-2 rounded-full bg-[#EF4444] animate-ping" />
-                  <span className="font-bold">Anomaly Detected · Block B</span>
+                  <span className="font-bold">Anomaly · Block B</span>
                 </div>
               ) : (
-                <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-md bg-[#22D3EE]/10 border border-[#22D3EE]/30 text-[#22D3EE]">
+                <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-xl bg-[#22D3EE]/10 border border-[#22D3EE]/30 text-[#22D3EE]">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#22D3EE]" />
-                  <span>Detection Active · Normal</span>
+                  <span>Normal</span>
                 </div>
               )}
             </div>
@@ -921,7 +897,7 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
                     </linearGradient>
                   </defs>
 
-                  <CartesianGrid strokeDasharray="3 3" stroke="#163B55" opacity={0.5} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#183C5A" opacity={0.5} />
                   
                   <XAxis 
                     dataKey="time" 
@@ -981,57 +957,18 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
             </div>
 
             {/* Chart Legend Below Plot */}
-            <div className="flex flex-wrap items-center justify-center gap-4 text-[10px] font-mono text-[#94A3B8] pt-2 border-t border-[#163B55]/50">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-[10px] font-mono text-[#94A3B8] pt-2 border-t border-[#183C5A]/50">
               <div className="flex items-center space-x-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#22D3EE]" />
                 <span className="text-[#F8FAFC]">Observed Flow</span>
               </div>
               <div className="flex items-center space-x-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#22C55E]" />
-                <span>Expected / Accounted</span>
+                <span>Expected Baseline</span>
               </div>
               <div className="flex items-center space-x-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]" />
                 <span>Unaccounted Loss</span>
-              </div>
-              <div className="flex items-center space-x-1.5">
-                <span className="w-4 h-0 border-t-2 border-dashed border-[#EF4444]" />
-                <span>Anomaly Threshold</span>
-              </div>
-            </div>
-
-          </div>
-
-          {/* 2 SMALL SYSTEM METRIC CARDS matching reference */}
-          <div className="grid grid-cols-2 gap-3">
-            
-            {/* Avg Pressure */}
-            <div 
-              onClick={() => onNavigate('predictive')}
-              className="bg-[#0B2134] border border-[#163B55] p-3 rounded-2xl flex items-center justify-between hover:border-[#22D3EE]/50 transition-all cursor-pointer"
-            >
-              <div>
-                <div className="font-display font-extrabold text-base text-[#F8FAFC]">2.8 bar</div>
-                <div className="text-[10px] text-[#94A3B8]">Avg. Pressure</div>
-                <div className="text-[9px] font-mono text-[#EF4444] mt-0.5">+18.4% vs baseline</div>
-              </div>
-              <div className="w-8 h-8 rounded-xl bg-[#0F2940] border border-[#163B55] flex items-center justify-center text-[#22D3EE]">
-                <Gauge className="w-4 h-4" />
-              </div>
-            </div>
-
-            {/* System Uptime */}
-            <div 
-              onClick={() => onNavigate('monitoring')}
-              className="bg-[#0B2134] border border-[#163B55] p-3 rounded-2xl flex items-center justify-between hover:border-[#22D3EE]/50 transition-all cursor-pointer"
-            >
-              <div>
-                <div className="font-display font-extrabold text-base text-[#F8FAFC]">98%</div>
-                <div className="text-[10px] text-[#94A3B8]">System Uptime</div>
-                <div className="text-[9px] font-mono text-[#22C55E] mt-0.5">Healthy</div>
-              </div>
-              <div className="w-8 h-8 rounded-xl bg-[#0F2940] border border-[#163B55] flex items-center justify-center text-[#22C55E]">
-                <ShieldCheck className="w-4 h-4" />
               </div>
             </div>
 
@@ -1041,9 +978,9 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
 
       </div>
 
-      {/* 4. RECENT ACTIVITY & VERIFICATION AUDIT TABLE matching reference */}
-      <div className="bg-[#0B2134] border border-[#163B55] p-4 rounded-2xl space-y-3" ref={verificationRef}>
-        <div className="flex items-center justify-between border-b border-[#163B55]/60 pb-2">
+      {/* 4. RECENT ACTIVITY & VERIFICATION AUDIT TABLE matching reference card layout */}
+      <div className="bg-[#0D2032] border border-[#183C5A] p-5 rounded-3xl space-y-4 shadow-xl" ref={verificationRef}>
+        <div className="flex items-center justify-between border-b border-[#183C5A]/60 pb-3">
           <div className="flex items-center space-x-2">
             <ShieldCheck className="w-4 h-4 text-[#22D3EE]" />
             <h3 className="font-display font-bold text-sm text-[#F8FAFC]">Recent Activity & Post-Isolation Audit</h3>
@@ -1056,66 +993,66 @@ export const V2DashboardPage: React.FC<V2DashboardPageProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-sans">
             <thead>
-              <tr className="text-[#94A3B8] border-b border-[#163B55]/40 text-[11px] font-mono">
-                <th className="py-2 px-3">Time</th>
-                <th className="py-2 px-3">Event</th>
-                <th className="py-2 px-3">Location</th>
-                <th className="py-2 px-3">Status</th>
+              <tr className="text-[#94A3B8] border-b border-[#183C5A]/60 text-[11px] font-mono">
+                <th className="py-2.5 px-3">Time</th>
+                <th className="py-2.5 px-3">Event</th>
+                <th className="py-2.5 px-3">Location</th>
+                <th className="py-2.5 px-3">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#163B55]/30">
+            <tbody className="divide-y divide-[#183C5A]/40">
               {isTargetValveClosed && (
                 <tr className="bg-[#22D3EE]/10 border-l-2 border-[#22D3EE] transition-colors">
-                  <td className="py-2.5 px-3 text-[#22D3EE] font-mono text-[11px] font-bold">Just now</td>
-                  <td className="py-2.5 px-3 text-[#F8FAFC] font-bold">Valve V-02 Closed. Zone Isolated & Flow Balanced (0 L/min)</td>
-                  <td className="py-2.5 px-3 text-[#22D3EE] font-semibold">Block B – Floor 2</td>
-                  <td className="py-2.5 px-3">
-                    <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono bg-[#22D3EE]/20 text-[#22D3EE] border border-[#22D3EE]/40">
+                  <td className="py-3 px-3 text-[#22D3EE] font-mono text-[11px] font-bold">Just now</td>
+                  <td className="py-3 px-3 text-[#F8FAFC] font-bold">Valve V-02 Closed. Zone Isolated & Flow Balanced (0 L/min)</td>
+                  <td className="py-3 px-3 text-[#22D3EE] font-semibold">Block B – Floor 2</td>
+                  <td className="py-3 px-3">
+                    <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono bg-[#22D3EE]/20 text-[#22D3EE] border border-[#22D3EE]/40">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#22D3EE]" />
                       <span>Verified</span>
                     </span>
                   </td>
                 </tr>
               )}
-              <tr className="hover:bg-[#0F2940]/40 transition-colors">
-                <td className="py-2.5 px-3 text-[#94A3B8] font-mono text-[11px]">10:28 AM</td>
-                <td className="py-2.5 px-3 text-[#F8FAFC] font-medium">Leak detected (differential flow)</td>
-                <td className="py-2.5 px-3 text-[#94A3B8]">Block B – Floor 2</td>
-                <td className="py-2.5 px-3">
-                  <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/30">
+              <tr className="hover:bg-[#15334E]/40 transition-colors">
+                <td className="py-3 px-3 text-[#94A3B8] font-mono text-[11px]">10:28 AM</td>
+                <td className="py-3 px-3 text-[#F8FAFC] font-medium">Leak detected (differential flow)</td>
+                <td className="py-3 px-3 text-[#94A3B8]">Block B – Floor 2</td>
+                <td className="py-3 px-3">
+                  <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/30">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#EF4444]" />
                     <span>High</span>
                   </span>
                 </td>
               </tr>
-              <tr className="hover:bg-[#0F2940]/40 transition-colors">
-                <td className="py-2.5 px-3 text-[#94A3B8] font-mono text-[11px]">10:26 AM</td>
-                <td className="py-2.5 px-3 text-[#F8FAFC] font-medium">Pressure variance +18.4%</td>
-                <td className="py-2.5 px-3 text-[#94A3B8]">Block B – Floor 2</td>
-                <td className="py-2.5 px-3">
-                  <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/30">
+              <tr className="hover:bg-[#15334E]/40 transition-colors">
+                <td className="py-3 px-3 text-[#94A3B8] font-mono text-[11px]">10:26 AM</td>
+                <td className="py-3 px-3 text-[#F8FAFC] font-medium">Pressure variance +18.4%</td>
+                <td className="py-3 px-3 text-[#94A3B8]">Block B – Floor 2</td>
+                <td className="py-3 px-3">
+                  <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/30">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#EF4444]" />
                     <span>High</span>
                   </span>
                 </td>
               </tr>
-              <tr className="hover:bg-[#0F2940]/40 transition-colors">
-                <td className="py-2.5 px-3 text-[#94A3B8] font-mono text-[11px]">10:25 AM</td>
-                <td className="py-2.5 px-3 text-[#F8FAFC] font-medium">AI recommendation: Isolate V-02</td>
-                <td className="py-2.5 px-3 text-[#94A3B8]">Block B</td>
-                <td className="py-2.5 px-3">
-                  <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/30">
+              <tr className="hover:bg-[#15334E]/40 transition-colors">
+                <td className="py-3 px-3 text-[#94A3B8] font-mono text-[11px]">10:25 AM</td>
+                <td className="py-3 px-3 text-[#F8FAFC] font-medium">AI recommendation: Isolate V-02</td>
+                <td className="py-3 px-3 text-[#94A3B8]">Block B</td>
+                <td className="py-3 px-3">
+                  <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/30">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
                     <span>Pending</span>
                   </span>
                 </td>
               </tr>
-              <tr className="hover:bg-[#0F2940]/40 transition-colors">
-                <td className="py-2.5 px-3 text-[#94A3B8] font-mono text-[11px]">10:20 AM</td>
-                <td className="py-2.5 px-3 text-[#F8FAFC] font-medium">Flow normalized</td>
-                <td className="py-2.5 px-3 text-[#94A3B8]">Block A</td>
-                <td className="py-2.5 px-3">
-                  <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold font-mono bg-[#22C55E]/20 text-[#22C55E] border border-[#22C55E]/30">
+              <tr className="hover:bg-[#15334E]/40 transition-colors">
+                <td className="py-3 px-3 text-[#94A3B8] font-mono text-[11px]">10:20 AM</td>
+                <td className="py-3 px-3 text-[#F8FAFC] font-medium">Flow normalized</td>
+                <td className="py-3 px-3 text-[#94A3B8]">Block A</td>
+                <td className="py-3 px-3">
+                  <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold font-mono bg-[#22C55E]/20 text-[#22C55E] border border-[#22C55E]/30">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]" />
                     <span>Stable</span>
                   </span>

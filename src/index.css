@@ -4,11 +4,24 @@
 
 @layer base {
   body {
-    background-color: #061421;
+    background-color: #06101E;
     color: #F8FAFC;
     overflow-x: hidden;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
+}
+
+/* Custom card surface and backdrop effects */
+.glass-card {
+  background: rgba(13, 32, 50, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(24, 60, 90, 0.6);
+}
+
+.hero-dark-card {
+  background: #040D17;
+  border: 1px solid #183C5A;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
 }
 
 /* Industrial control center custom scrollbars */
@@ -18,12 +31,12 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #061421;
+  background: #06101E;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #163B55;
-  border-radius: 3px;
+  background: #183C5A;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -32,14 +45,15 @@
 
 /* Custom chart tooltips and subtle grid helpers */
 .recharts-default-tooltip {
-  background-color: #0B2134 !important;
-  border-color: #163B55 !important;
-  border-radius: 8px !important;
+  background-color: #040D17 !important;
+  border-color: #183C5A !important;
+  border-radius: 12px !important;
   color: #F8FAFC !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important;
 }
 
 .recharts-cartesian-grid-horizontal line,
 .recharts-cartesian-grid-vertical line {
-  stroke: #163B55 !important;
+  stroke: #122D44 !important;
   stroke-dasharray: 3 3;
 }
